@@ -15,12 +15,14 @@ router.post('/', (req, res) => {
       inventory: req.body.inventory
     };
     products.productList.push(productObject);
-    res.json({"success": true});
+    //res.redirect
   } else {
     res.json({"success": false});
   }
   id++;
 });
+
+//router.put(`/products/:id`)
 
 
 module.exports = router;
