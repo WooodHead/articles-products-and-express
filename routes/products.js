@@ -2,9 +2,9 @@
 const express = require('express');
 const router = express('router');
 const displayProducts = require('../db/products');
-
+let productList = displayProducts.productList;
 router.get('/', (req, res) => {
-  res.render('index', displayProducts.productList);
+  res.render('index', displayProducts);
 });
 
 let id = 0;
@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
       price: req.body.price,
       inventory: req.body.inventory
     };
-    displayProducts.productList.push(productObject);
+    productList.push(productObject);
     res.redirect('/products');
   } else {
     res.redirect(400, '/products/new');
