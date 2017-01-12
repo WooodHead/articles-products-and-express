@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/aukai84/articles-products-and-express#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "chai": "^3.5.0",
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
