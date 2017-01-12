@@ -1,7 +1,7 @@
 //jshint esversion: 6
 const express = require('express');
 const router = express('router');
-const products = require('../db/products');
+const displayProducts = require('../db/products');
 
 let id = 0;
 
@@ -14,10 +14,10 @@ router.post('/', (req, res) => {
       price: req.body.price,
       inventory: req.body.inventory
     };
-    products.productList.push(productObject);
-    //res.redirect
+    displayProducts.productList.push(productObject);
+    res.redirect('/');
   } else {
-    res.json({"success": false});
+    res.redirect(400, '/new');
   }
   id++;
 });
