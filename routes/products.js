@@ -3,6 +3,10 @@ const express = require('express');
 const router = express('router');
 const displayProducts = require('../db/products');
 
+router.get('/', (req, res) => {
+  res.render('index', displayProducts.productList);
+});
+
 let id = 0;
 
 router.post('/', (req, res) => {
@@ -15,9 +19,9 @@ router.post('/', (req, res) => {
       inventory: req.body.inventory
     };
     displayProducts.productList.push(productObject);
-    res.redirect('/');
+    res.redirect('/products');
   } else {
-    res.redirect(400, '/new');
+    res.redirect(400, '/products/new');
   }
   id++;
 });
