@@ -29,17 +29,29 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
     let newProduct = req.body;
     let newID = req.body.id;
+    let addressID = req.params.id;
 
-    if(newProduct.hasOwnProperty('name')){
-      itemArray[newID].name = newProduct.name;
+    if(newProduct.hasOwnProperty('id')){
+      if(newID === addressID){
+        if(newID < itemArray.length && newID > 0){
+          if(newProduct.hasOwnProperty('name')){
+        itemArray[newID].name = newProduct.name;
+          }
+          if(newProduct.hasOwnProperty('price')){
+            itemArray[newID].price = newProduct.price;
+          }
+          if(newProduct.hasOwnProperty('inventory')){
+            itemArray[newID].inventory = newProduct.inventory;
+          }
+        } else {
+          res.send("id doesn't exist");
+        }
+      } else {
+        res.send("id's don't match");
+      }
+    } else {
+      res.send("no id property");
     }
-    if(newProduct.hasOwnProperty('price')){
-      itemArray[newID].price = newProduct.price;
-    }
-    if(newProduct.hasOwnProperty('inventory')){
-      itemArray[newID].inventory = newProduct.inventory;
-    }
-
     res.send(itemArray);
 });
 
