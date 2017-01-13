@@ -69,6 +69,10 @@ router.get('/:id/edit', (req, res) => {
   res.render('./partials/edit', newProduct);
 });
 
+router.get('/new', (req, res) => {
+  res.render('./partials/new');
+});
+
 function putValidation(requestObject, addressID) {
   if(requestObject.hasOwnProperty('id') && requestObject.id === addressID && requestObject.id < itemArray.length && requestObject.id > 0){
     return true;
