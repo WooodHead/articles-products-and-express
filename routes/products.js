@@ -29,30 +29,25 @@ router.put('/:id', (req, res) => {
     let newID = req.body.id;
     let addressID = req.params.id;
 
-    if(newProduct.hasOwnProperty('id')){
-      if(newID === addressID){
-        if(newID < itemArray.length && newID > 0){
-          if(newProduct.hasOwnProperty('name')){
-        itemArray[newID].name = newProduct.name;
-          }
-          if(newProduct.hasOwnProperty('price')){
-            itemArray[newID].price = newProduct.price;
-          }
-          if(newProduct.hasOwnProperty('inventory')){
-            itemArray[newID].inventory = newProduct.inventory;
-          }
-        } else {
-          res.send("id doesn't exist");
-        }
-      } else {
-        res.send("id's don't match");
+    if(putValidation(newProduct, addressID)){
+      switch(true){
+        case newProduct.hasOwnProperty('name'):
+          itemArray[newID].name = newProduct.name;
+          break;
+        case newProduct.hasOwnProperty('price'):
+          itemArray[newID].price = newProduct.price;
+          break;
+        case newProduct.hasOwnProperty('inventory'):
+          itemArray[newID].inventory = newProduct.inventory;
+          break;
+        default:
+          res.redirect(`/products/${newID}/edit`);
       }
     } else {
-      res.send("no id property");
+      res.send('redirecting..');
     }
-    res.render('./partials/product', itemArray[newID]);
-    // console.log(`/products/${newID}`);
-    // res.redirect(`/products/${newID}`);
+
+    res.redirect(303, `/products/${newID}`);
 });
 
 router.delete('/:id', (req, res) => {
@@ -68,8 +63,17 @@ router.delete('/:id', (req, res) => {
 router.get('/:id', (req, res) => {
   console.log("this is the id:", req.params.id);
   let targetID = req.params.id;
-  res.render('product', itemArray[targetID]);
+  res.render('./partials/product', itemArray[targetID]);
 });
+
+function putValidation(requestObject, addressID) {
+  if(requestObject.hasOwnProperty('id') && requestObject.id === addressID && requestObject.id < itemArray.length && requestObject.id > 0){
+    return true;
+  }
+}
+function deleteValidation(argument) {
+  // body...
+}
 
 
 module.exports = router;
