@@ -41,12 +41,11 @@ router.put('/:id', (req, res) => {
           itemArray[newID].inventory = newProduct.inventory;
           break;
         default:
-          res.redirect(`/products/${newID}/edit`);
+          res.redirect(303, `/products/${newID}/edit`);
       }
     } else {
-      res.redirect(`/products/${newID}/edit`);
+      res.redirect(303, `/products/${newID}/edit`);
     }
-
     res.redirect(303, `/products/${newID}`);
 });
 
@@ -58,7 +57,6 @@ router.delete('/:id', (req, res) => {
     res.send("error");
   }
   res.redirect(303, '/products');
-
 });
 
 router.get('/:id', (req, res) => {
@@ -66,14 +64,23 @@ router.get('/:id', (req, res) => {
   res.render('./partials/product', itemArray[targetID]);
 });
 
+router.get('/:id/edit', (req, res) => {
+  let newProduct = req.body;
+  res.render('./partials/edit', newProduct);
+});
+
 function putValidation(requestObject, addressID) {
   if(requestObject.hasOwnProperty('id') && requestObject.id === addressID && requestObject.id < itemArray.length && requestObject.id > 0){
     return true;
+  } else {
+    return false;
   }
 }
 function deleteValidation(address) {
   if(address < itemArray.length && address > 0){
     return true;
+  } else {
+    return false;
   }
 }
 
