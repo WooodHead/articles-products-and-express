@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
       inventory: req.body.inventory
     };
     products.productList.push(productObject);
-    res.redirect('/products');
+     res.redirect('/products');
   } else {
     res.redirect(400, '/products/new');
   }
@@ -27,26 +27,43 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    console.log(req.params.id);
-    let newId = req.params.id;
-    console.log(products.productList.length);
-    for(let i = 0; i < products.productList.length; i++){
-      console.log(products.productList[i].id);
-      if(products.productList[i].id === newId){
-        console.log(products.productList[i].id);
-        if(req.body.hasOwnProperty('name')){
-          products.productList[i].name = req.body.name;
-        } else if(req.body.hasOwnProperty('price')){
-          products.productList[i].price = req.body.price;
-        } else if(req.body.hasOwnProperty('inventory')){
-          products.productList[i].inventory = req.body.inventory;
-        }
-      } else {
-        res.redirect(400, '/products/:id/edit');
-      }
+    let newProduct = req.body;
+    let newID = req.body.id;
+
+    if(newProduct.hasOwnProperty('name')){
+      products.productList[newID].name = newProduct.name;
     }
-    res.redirect('/products/:id');
+    if(newProduct.hasOwnProperty('price')){
+      products.productList[newID].price = newProduct.price;
+    }
+    if(newProduct.hasOwnProperty('inventory')){
+      products.productList[newID].inventory = newProduct.inventory;
+    }
+    // for(let i = 0; i < products.productList.length; i++){
+    //   console.log(products.productList[i].id)
+    //   console.log(newProduct.id);
+    //   if(products.productList[i][id] === newProduct.id){
+    //     console.log("matched");
+    //     if(newProduct.hasOwnProperty('name')){
+    //       console.log("name");
+    //       products.productList[i].name = newProduct.name;
+    //     }
+    //     if(newProduct.hasOwnProperty('price')){
+    //       console.log("price");
+    //       products.productList[i].price = newProduct.price;
+    //     }
+    //     if(newProduct.hasOwnProperty('inventory')){
+    //       console.log('inventory');
+    //       products.productList[i].inventory = neProduct.inventory;
+    //     }
+    //   }
+    // }
+    res.send(products.productList);
 });
+
+// router.get('/:id', (req, res) => {
+
+// });
 
 
 module.exports = router;
