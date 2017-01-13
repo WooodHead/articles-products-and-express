@@ -8,8 +8,6 @@ router.get('/', (req, res) => {
   res.render('index', products);
 });
 
-let id = 0;
-
 router.post('/', (req, res) => {
   let newProduct = req.body;
   if(newProduct.hasOwnProperty('name') && newProduct.hasOwnProperty('price') && newProduct.hasOwnProperty('inventory')){
@@ -20,7 +18,7 @@ router.post('/', (req, res) => {
       inventory: newProduct.inventory
     };
     itemArray.push(productObject);
-     res.redirect('/products');
+    res.redirect('/products');
   } else {
     res.redirect(400, '/products/new');
   }
@@ -52,7 +50,9 @@ router.put('/:id', (req, res) => {
     } else {
       res.send("no id property");
     }
-    res.send(itemArray);
+    res.render('./partials/product', itemArray[newID]);
+    // console.log(`/products/${newID}`);
+    // res.redirect(`/products/${newID}`);
 });
 
 router.delete('/:id', (req, res) => {
@@ -63,6 +63,12 @@ router.delete('/:id', (req, res) => {
   itemArray.splice(deletedID, 1);
   res.send(itemArray);
 
+});
+
+router.get('/:id', (req, res) => {
+  console.log("this is the id:", req.params.id);
+  let targetID = req.params.id;
+  res.render('product', itemArray[targetID]);
 });
 
 

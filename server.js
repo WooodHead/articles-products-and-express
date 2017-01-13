@@ -6,6 +6,8 @@ const app = express();
 const products = require('./routes/products');
 const displayProducts = require('./db/products');
 
+let itemArray = displayProducts.productList;
+
 const hbs = handlebars.create({
   extname: '.hbs',
   defaultLayout: 'app'
@@ -14,7 +16,8 @@ const hbs = handlebars.create({
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use('/products', products);
 
 app.get('/', (req, res) => {
