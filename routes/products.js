@@ -55,9 +55,15 @@ router.put('/:id', (req, res) => {
     res.send(itemArray);
 });
 
-// router.get('/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
+  let addressID = req.params.id;
+  let deletedID = req.body.id;
+  let productToRemove = req.body;
 
-// });
+  itemArray.splice(deletedID, 1);
+  res.send(itemArray);
+
+});
 
 
 module.exports = router;
