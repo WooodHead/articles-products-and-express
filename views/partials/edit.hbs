@@ -1,7 +1,7 @@
-<form action="/products/{{id}}" method="put">
- Current ID: {{id}} <br><input type="text" name="ID" placeholder="new ID..."><br>
- Current Name: {{name}} <br><input type="text" name="Name" placeholder="new name..."><br>
- Current Price: {{price}}<br><input type="text" name="Price" placeholder="new price..."><br>
- Current Inventory: {{inventory}}<br><input type="text" name="Inventory" placeholder="new inventory..."><br>
+<form action="/products/{{id}}?_method=PUT" method="POST">
+ <input type="hidden" name="id" value="{{id}}">
+ Current Name: {{name}} <br><input type="text" name="name" placeholder="new name..."><br>
+ Current Price: {{price}}<br><input type="text" name="price" placeholder="new price..."><br>
+ Current Inventory: {{inventory}}<br><input type="text" name="inventory" placeholder="new inventory..."><br>
   <br><input type="submit" value="Submit">
 </form>

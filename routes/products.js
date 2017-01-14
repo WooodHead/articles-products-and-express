@@ -26,6 +26,7 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+    console.log(req.params.id);
     let newProduct = req.body;
     let newID = req.body.id;
     let addressID = req.params.id;
@@ -40,7 +41,7 @@ router.put('/:id', (req, res) => {
       itemArray[newID].inventory = newProduct.inventory;
     }
     } else {
-      res.redirect(303, `/products/${addressID}/edit`);
+      res.redirect(303, `/products/${newID}/edit`);
     }
     res.redirect(303, `/products/${newID}`);
 });

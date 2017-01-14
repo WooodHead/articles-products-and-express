@@ -5,6 +5,7 @@ const handlebars = require('express-handlebars');
 const app = express();
 const products = require('./routes/products');
 const articles = require('./routes/articles');
+const methodOverride = require('method-override');
 
 const hbs = handlebars.create({
   extname: '.hbs',
@@ -16,6 +17,7 @@ app.set('view engine', 'hbs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride('_method'));
 app.use('/products', products);
 app.use('/articles', articles);
 
