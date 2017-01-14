@@ -39,19 +39,6 @@ router.put('/:id', (req, res) => {
     if(newProduct.hasOwnProperty('inventory')){
       itemArray[newID].inventory = newProduct.inventory;
     }
-      // switch(true){
-      //   case newProduct.hasOwnProperty('name'):
-      //     itemArray[newID].name = newProduct.name;
-      //     break;
-      //   case newProduct.hasOwnProperty('price'):
-      //     itemArray[newID].price = newProduct.price;
-      //     break;
-      //   case newProduct.hasOwnProperty('inventory'):
-      //     itemArray[newID].inventory = newProduct.inventory;
-      //     break;
-      //   default:
-      //     res.redirect(303, `/products/${addressID}/edit`);
-      // }
     } else {
       res.redirect(303, `/products/${addressID}/edit`);
     }

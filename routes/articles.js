@@ -4,7 +4,7 @@ const articles = require('../db/articles');
 let articleMap = articles.articleList;
 
 router.get('/', (req, res) => {
-  res.render('index', articleMap);
+  res.render('index', articles);
 });
 
 router.post('/', (req, res) => {
@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
       urlTitle: encodeURIComponent(newArticle.title)
     };
     articleMap[newArticle.title] = savedArticle;
-    res.send(articleMap);
+    res.redirect('/articles');
   } else {
     res.send("error");
   }
