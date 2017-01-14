@@ -9,6 +9,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+  console.log(req.body);
   let newProduct = req.body;
   if(postIsValid(newProduct)){
     let productObject = {
