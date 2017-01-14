@@ -27,25 +27,38 @@ router.put('/:title', (req, res) => {
   let newArticle = req.body;
   let articlePath = req.params.title;
   console.log(articlePath);
-  console.log(newArticle.title);
-  let storedArticle = articleMap[req.body.title];
-
   if(titleIsValid(newArticle, articlePath)){
+    console.log(newArticle);
     switch(true){
       case newArticle.hasOwnProperty('title'):
-        storedArticle.title = newArticle.title;
+        articleMap[articlePath].title = newArticle.title;
         break;
       case newArticle.hasOwnProperty('body'):
-        storedArticle.body = newArticle.body;
+        console.log('body changed to', newArticle.body);
+        articleMap[articlePath].body = newArticle.body;
+        console.log(articleMap[articlePath]);
         break;
       case newArticle.hasOwnProperty('author'):
-        storedArticle.author = newArticle.author;
+        console.log('author changed to', newArticle.author);
+        articleMap[articlePath].author = newArticle.author;
+        console.log(articleMap[articlePath]);
         break;
       default:
         res.send(' switch error');
     }
   } else {
     res.send(' validation error');
+  }
+  res.send(articleMap);
+});
+
+router.delete('/:title', (req, res) => {
+  let articlePath = req.params.title;
+  console.log(articlePath);
+  if(isValidToDelete(articlePath)){
+    delete articleMap[articlePath];
+  } else {
+    return ("can't delete");
   }
   res.send(articleMap);
 });
@@ -66,6 +79,12 @@ function titleIsValid(article, address) {
   }
 }
 
-
+function isValidToDelete(address) {
+  if(articleMap.hasOwnProperty(address)){
+    return true;
+  } else {
+    return false;
+  }
+}
 
 module.exports = router;
