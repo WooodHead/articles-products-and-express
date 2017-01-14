@@ -37,7 +37,7 @@ router.put('/:title', (req, res) => {
   } else {
     res.send(' validation error');
   }
-  res.send(articleMap);
+  res.redirect(303, `/articles/${storedArticle.urlTitle}`);
 });
 
 router.delete('/:title', (req, res) => {
@@ -48,7 +48,12 @@ router.delete('/:title', (req, res) => {
   } else {
     return ("can't delete");
   }
-  res.send(articleMap);
+  res.redirect(303, '/articles');
+});
+
+router.get('/:title', (req, res) => {
+  let articleKey = req.params.title;
+  res.render('./partials/article', articleMap[articleKey]);
 });
 
 function bodyIsValid(article) {
