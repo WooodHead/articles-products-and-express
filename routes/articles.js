@@ -26,32 +26,14 @@ router.post('/', (req, res) => {
 router.put('/:title', (req, res) => {
   let newArticle = req.body;
   let articlePath = req.params.title;
-  console.log(articlePath);
+  let storedArticle = articleMap[newArticle.title];
   if(titleIsValid(newArticle, articlePath)){
     if(newArticle.hasOwnProperty('body')){
-      articleMap[articlePath].body = newArticle.body;
+      storedArticle.body = newArticle.body;
     }
-
     if(newArticle.hasOwnProperty('author')){
-      articleMap[articlePath].author = newArticle.author;
+      storedArticle.author = newArticle.author;
     }
-    // switch(true){
-    //   case newArticle.hasOwnProperty('title'):
-    //     articleMap[articlePath].title = newArticle.title;
-    //     break;
-    //   case newArticle.hasOwnProperty('body'):
-    //     console.log('body changed to', newArticle.body);
-    //     articleMap[articlePath].body = newArticle.body;
-    //     console.log(articleMap[articlePath]);
-    //     break;
-    //   case newArticle.hasOwnProperty('author'):
-    //     console.log('author changed to', newArticle.author);
-    //     articleMap[articlePath].author = newArticle.author;
-    //     console.log(articleMap[articlePath]);
-    //     break;
-    //   default:
-    //     res.send(' switch error');
-    // }
   } else {
     res.send(' validation error');
   }
