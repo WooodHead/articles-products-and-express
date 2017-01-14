@@ -1,4 +1,4 @@
-//jshint esversion: 6
+
 const express = require('express');
 const router = express('router');
 const products = require('../db/products');
@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   let newProduct = req.body;
-  if(newProduct.hasOwnProperty('name') && newProduct.hasOwnProperty('price') && newProduct.hasOwnProperty('inventory')){
+  if(postIsValid(newProduct)){
     let productObject = {
       id: itemArray.length,
       name: newProduct.name,
@@ -29,7 +29,7 @@ router.put('/:id', (req, res) => {
     let newID = req.body.id;
     let addressID = req.params.id;
 
-    if(putValidation(newProduct, addressID)){
+    if(putIsValid(newProduct, addressID)){
       switch(true){
         case newProduct.hasOwnProperty('name'):
           itemArray[newID].name = newProduct.name;
@@ -41,22 +41,26 @@ router.put('/:id', (req, res) => {
           itemArray[newID].inventory = newProduct.inventory;
           break;
         default:
-          res.redirect(303, `/products/${newID}/edit`);
+          res.redirect(303, `/products/${addressID}/edit`);
       }
     } else {
-      res.redirect(303, `/products/${newID}/edit`);
+      res.redirect(303, `/products/${addressID}/edit`);
     }
     res.redirect(303, `/products/${newID}`);
 });
 
 router.delete('/:id', (req, res) => {
   let addressID = req.params.id;
-  if(deleteValidation(addressID)){
+  if(deleteIsValid(addressID)){
     itemArray.splice(addressID, 1);
   } else {
     res.send("error");
   }
   res.redirect(303, '/products');
+});
+
+router.get('/new', (req, res) => {
+  res.render('./partials/new');
 });
 
 router.get('/:id', (req, res) => {
@@ -65,22 +69,26 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/:id/edit', (req, res) => {
-  let newProduct = req.body;
-  res.render('./partials/edit', newProduct);
+  targetID = req.params.id;
+  res.render('./partials/edit', itemArray[targetID]);
 });
 
-router.get('/new', (req, res) => {
-  res.render('./partials/new');
-});
-
-function putValidation(requestObject, addressID) {
-  if(requestObject.hasOwnProperty('id') && requestObject.id === addressID && requestObject.id < itemArray.length && requestObject.id > 0){
+function postIsValid(product) {
+  if(product.hasOwnProperty('name') && product.hasOwnProperty('price') && product.hasOwnProperty('inventory')){
     return true;
   } else {
     return false;
   }
 }
-function deleteValidation(address) {
+
+function putIsValid(product, addressID) {
+  if(product.hasOwnProperty('id') && product.id === addressID && product.id < itemArray.length && product.id > 0){
+    return true;
+  } else {
+    return false;
+  }
+}
+function deleteIsValid(address) {
   if(address < itemArray.length && address > 0){
     return true;
   } else {
