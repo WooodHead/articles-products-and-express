@@ -28,24 +28,30 @@ router.put('/:title', (req, res) => {
   let articlePath = req.params.title;
   console.log(articlePath);
   if(titleIsValid(newArticle, articlePath)){
-    console.log(newArticle);
-    switch(true){
-      case newArticle.hasOwnProperty('title'):
-        articleMap[articlePath].title = newArticle.title;
-        break;
-      case newArticle.hasOwnProperty('body'):
-        console.log('body changed to', newArticle.body);
-        articleMap[articlePath].body = newArticle.body;
-        console.log(articleMap[articlePath]);
-        break;
-      case newArticle.hasOwnProperty('author'):
-        console.log('author changed to', newArticle.author);
-        articleMap[articlePath].author = newArticle.author;
-        console.log(articleMap[articlePath]);
-        break;
-      default:
-        res.send(' switch error');
+    if(newArticle.hasOwnProperty('body')){
+      articleMap[articlePath].body = newArticle.body;
     }
+
+    if(newArticle.hasOwnProperty('author')){
+      articleMap[articlePath].author = newArticle.author;
+    }
+    // switch(true){
+    //   case newArticle.hasOwnProperty('title'):
+    //     articleMap[articlePath].title = newArticle.title;
+    //     break;
+    //   case newArticle.hasOwnProperty('body'):
+    //     console.log('body changed to', newArticle.body);
+    //     articleMap[articlePath].body = newArticle.body;
+    //     console.log(articleMap[articlePath]);
+    //     break;
+    //   case newArticle.hasOwnProperty('author'):
+    //     console.log('author changed to', newArticle.author);
+    //     articleMap[articlePath].author = newArticle.author;
+    //     console.log(articleMap[articlePath]);
+    //     break;
+    //   default:
+    //     res.send(' switch error');
+    // }
   } else {
     res.send(' validation error');
   }
