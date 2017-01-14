@@ -4,7 +4,7 @@ const articles = require('../db/articles');
 let articleMap = articles.articleList;
 
 router.get('/', (req, res) => {
-  res.send("sanity");
+  res.render('index', articleMap);
 });
 
 router.post('/', (req, res) => {

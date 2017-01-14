@@ -29,21 +29,29 @@ router.put('/:id', (req, res) => {
     let newProduct = req.body;
     let newID = req.body.id;
     let addressID = req.params.id;
-
-    if(putIsValid(newProduct, addressID)){
-      switch(true){
-        case newProduct.hasOwnProperty('name'):
-          itemArray[newID].name = newProduct.name;
-          break;
-        case newProduct.hasOwnProperty('price'):
-          itemArray[newID].price = newProduct.price;
-          break;
-        case newProduct.hasOwnProperty('inventory'):
-          itemArray[newID].inventory = newProduct.inventory;
-          break;
-        default:
-          res.redirect(303, `/products/${addressID}/edit`);
-      }
+  if(putIsValid(newProduct, addressID)){
+    if(newProduct.hasOwnProperty('name')){
+      itemArray[newID].name = newProduct.name;
+    }
+    if(newProduct.hasOwnProperty('price')){
+      itemArray[newID].price = newProduct.price;
+    }
+    if(newProduct.hasOwnProperty('inventory')){
+      itemArray[newID].inventory = newProduct.inventory;
+    }
+      // switch(true){
+      //   case newProduct.hasOwnProperty('name'):
+      //     itemArray[newID].name = newProduct.name;
+      //     break;
+      //   case newProduct.hasOwnProperty('price'):
+      //     itemArray[newID].price = newProduct.price;
+      //     break;
+      //   case newProduct.hasOwnProperty('inventory'):
+      //     itemArray[newID].inventory = newProduct.inventory;
+      //     break;
+      //   default:
+      //     res.redirect(303, `/products/${addressID}/edit`);
+      // }
     } else {
       res.redirect(303, `/products/${addressID}/edit`);
     }
