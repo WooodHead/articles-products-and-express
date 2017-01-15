@@ -19,7 +19,8 @@ router.post('/', (req, res) => {
     articleMap[newArticle.title] = savedArticle;
     res.redirect('/articles');
   } else {
-    res.send("error");
+    req.flash("error", "Invalid post..create new article!");
+    res.redirect('/articles/new');
   }
 });
 
@@ -52,7 +53,7 @@ router.delete('/:title', (req, res) => {
 });
 
 router.get('/new', (req, res) => {
-  res.render('./partials/new_article');
+  res.render('./partials/new_article', {messages: res.locals.messages()});
 });
 
 router.get('/:title', (req, res) => {
