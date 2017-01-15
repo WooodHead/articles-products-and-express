@@ -44,11 +44,13 @@ router.put('/:title', (req, res) => {
 
 router.delete('/:title', (req, res) => {
   let articlePath = req.params.title;
+  let articleAddress = encodeURIComponent(articlePath);
   console.log(articlePath);
   if(isValidToDelete(articlePath)){
     delete articleMap[articlePath];
   } else {
-    return ("can't delete");
+    req.flash("error", "Delete unsuccessful...");
+    res.redirect(303,`/articles/${articleAddress}`);
   }
   res.redirect(303, '/articles');
 });
@@ -59,14 +61,14 @@ router.get('/new', (req, res) => {
 
 router.get('/:title', (req, res) => {
   let articleKey = req.params.title;
-  res.render('./partials/article', articleMap[articleKey]);
+  res.render('./partials/article', {articles: articleMap[articleKey], messages: res.locals.messages()});
 });
-
 router.get('/:title/edit', (req, res) => {
   console.log(req.params.title);
   let articleKey = req.params.title;
   res.render('./partials/edit_article', {articles: articleMap[articleKey], messages: res.locals.messages()});
 });
+
 
 function bodyIsValid(article) {
   if(article.hasOwnProperty('title') && article.hasOwnProperty('body') && article.hasOwnProperty('author')){
