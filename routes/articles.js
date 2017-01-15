@@ -35,7 +35,7 @@ router.put('/:title', (req, res) => {
       storedArticle.author = newArticle.author;
     }
   } else {
-    res.send(' validation error');
+    res.redirect(303,`/articles/${storedArticle.urlTitle}/edit`);
   }
   res.redirect(303, `/articles/${storedArticle.urlTitle}`);
 });
@@ -57,8 +57,9 @@ router.get('/:title', (req, res) => {
 });
 
 router.get('/:title/edit', (req, res) => {
+  console.log(req.params.title);
   let articleKey = req.params.title;
-  res.render('./partials/edit_article');
+  res.render('./partials/edit_article', articleMap[articleKey]);
 });
 
 function bodyIsValid(article) {

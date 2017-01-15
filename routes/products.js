@@ -64,7 +64,7 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get('/new', (req, res) => {
-  res.render('./partials/new', {messages: res.locals.messages()});
+  res.render('./partials/new_product', {messages: res.locals.messages()});
 });
 
 router.get('/:id', (req, res) => {
