@@ -46,7 +46,7 @@ router.put('/:id', (req, res) => {
       productMap[newID].inventory = newProduct.inventory;
     }
     } else {
-      req.flash("error", "Update failed..sending to edit page!");
+      req.flash("error", "Update failed..try again!");
       res.redirect(303, `/products/${newID}/edit`);
     }
     res.redirect(303, `/products/${newID}`);
@@ -57,7 +57,8 @@ router.delete('/:id', (req, res) => {
   if(deleteIsValid(targetID)){
     delete productMap[targetID];
   } else {
-    res.send("error");
+    req.flash("error", "Delete unsuccessful..");
+    res.redirect(303, `/products/${targetID}`);
   }
   res.redirect(303, '/products');
 });
@@ -68,7 +69,7 @@ router.get('/new', (req, res) => {
 
 router.get('/:id', (req, res) => {
   let targetID = req.params.id;
-  res.render('./partials/product', productMap[targetID]);
+  res.render('./partials/product', {products: productMap[targetID], messages: res.locals.messages()});
 });
 
 router.get('/:id/edit', (req, res) => {
