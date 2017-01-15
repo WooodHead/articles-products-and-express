@@ -53,7 +53,7 @@ router.delete('/:title', (req, res) => {
 });
 
 router.get('/new', (req, res) => {
-  res.render('./partials/new_article', {messages: res.locals.messages()});
+  res.render('./partials/new_article', {messages: res.locals.messages});
 });
 
 router.get('/:title', (req, res) => {
