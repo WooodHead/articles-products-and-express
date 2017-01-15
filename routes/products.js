@@ -46,7 +46,7 @@ router.put('/:id', (req, res) => {
       productMap[newID].inventory = newProduct.inventory;
     }
     } else {
-      req.flash("error", "Request failed..sending to edit page");
+      req.flash("error", "Update failed..sending to edit page!");
       res.redirect(303, `/products/${newID}/edit`);
     }
     res.redirect(303, `/products/${newID}`);
@@ -73,7 +73,7 @@ router.get('/:id', (req, res) => {
 
 router.get('/:id/edit', (req, res) => {
   targetID = req.params.id;
-  res.render('./partials/edit_product', productMap[targetID]);
+  res.render('./partials/edit_product', {products:productMap[targetID], messages: res.locals.messages()});
 });
 
 function postIsValid(product) {
