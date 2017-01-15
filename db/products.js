@@ -1,6 +1,6 @@
 
 
-let productList = [];
+let productList = {};
 
 
 module.exports = {

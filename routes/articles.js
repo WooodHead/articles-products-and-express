@@ -56,6 +56,11 @@ router.get('/:title', (req, res) => {
   res.render('./partials/article', articleMap[articleKey]);
 });
 
+router.get('/:title/edit', (req, res) => {
+  let articleKey = req.params.title;
+  res.render('./partials/edit_article');
+});
+
 function bodyIsValid(article) {
   if(article.hasOwnProperty('title') && article.hasOwnProperty('body') && article.hasOwnProperty('author')){
     return true;
