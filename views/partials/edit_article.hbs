@@ -1,7 +1,7 @@
 <form action="/articles/{{urlTitle}}?_method=PUT" method="POST">
   <input type="hidden" name="title" value="{{title}}">
-  Current Title: {{title}}<br>
-  Current Body: {{body}}<br><input type="text" name="body" placeholder="new body..."><br>
-  Current Author: {{author}}<br><input type="text" name="author" placeholder="new author..."><br>
+  {{title}}<br><br>
+  Current Body: <br><input type="text" name="body" placeholder="{{body}}"><br>
+  Current Author: <br><input type="text" name="author" placeholder="{{author}}"><br>
   <br><input type="submit" value="Submit">
 </form>

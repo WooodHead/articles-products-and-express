@@ -1,8 +1,8 @@
 <form action="/products/{{products.id}}?_method=PUT" method="POST">
  <input type="hidden" name="id" value="{{products.id}}">
- Current Name: {{products.name}} <br><input type="text" name="name" placeholder="new name..."><br>
- Current Price: {{products.price}}<br><input type="text" name="price" placeholder="new price..."><br>
- Current Inventory: {{iproducts.inventory}}<br><input type="text" name="inventory" placeholder="new inventory..."><br>
+ Name: <br><input type="text" name="name" placeholder="{{products.name}}"><br>
+ Price: <br><input type="text" name="price" placeholder="{{products.price}}"><br>
+ Inventory: <br><input type="text" name="inventory" placeholder="{{products.inventory}}"><br>
   <br><input type="submit" value="Submit">
 </form>
 {{{messages}}}

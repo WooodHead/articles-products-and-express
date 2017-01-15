@@ -51,6 +51,10 @@ router.delete('/:title', (req, res) => {
   res.redirect(303, '/articles');
 });
 
+router.get('/new', (req, res) => {
+  res.render('./partials/new_article');
+});
+
 router.get('/:title', (req, res) => {
   let articleKey = req.params.title;
   res.render('./partials/article', articleMap[articleKey]);
