@@ -5,9 +5,8 @@ const products = require('../db/products');
 const productMap = products.productList;
 
 router.get('/', (req, res) => {
-  //console.log(res.locals.messages());
-  //console.log(req.flash("info"));
-  res.render('index', products);
+  console.log(productMap);
+  res.render('index', {products: products, productMessages: res.locals.messages()});
 });
 
 let ID = 0;
@@ -60,6 +59,7 @@ router.delete('/:id', (req, res) => {
     req.flash("error", "Delete unsuccessful..");
     res.redirect(303, `/products/${targetID}`);
   }
+  req.flash("info", `${productMap[targetID]} successfully deleted!`);
   res.redirect(303, '/products');
 });
 

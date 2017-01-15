@@ -1,5 +1,6 @@
 
-{{#each productList}}
+{{{productMessages}}}
+{{#each products.productList}}
   <div class="products">
     <h1>Name: {{name}}</h1>
     <h2>Price: {{price}}</h2>
@@ -7,7 +8,7 @@
   </div>
 {{/each}}
 
-{{#each articleList}}
+{{#each articles.articleList}}
   <div class="articles">
     <h1>Title: {{title}}</h1>
     <h2>Body: {{body}}</h2>

@@ -4,7 +4,7 @@ const articles = require('../db/articles');
 let articleMap = articles.articleList;
 
 router.get('/', (req, res) => {
-  res.render('index', articles);
+  res.render('index', {articles: articles, articleMessages: res.locals.messages()});
 });
 
 router.post('/', (req, res) => {
@@ -52,6 +52,7 @@ router.delete('/:title', (req, res) => {
     req.flash("error", "Delete unsuccessful...");
     res.redirect(303,`/articles/${articleAddress}`);
   }
+  req.flash("info", "Delete success!");
   res.redirect(303, '/articles');
 });
 
