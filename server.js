@@ -9,7 +9,9 @@ const app = express();
 const products = require('./routes/products');
 const articles = require('./routes/articles');
 const methodOverride = require('method-override');
+const fs = require('fs');
 
+let logID = 0;
 const hbs = handlebars.create({
   extname: '.hbs',
   defaultLayout: 'app'
@@ -28,6 +30,12 @@ app.use(function (req, res, next) {
   next();
 });
 app.use(methodOverride('_method'));
+app.use((req, res, next) => {
+  console.log(req.method);
+  console.log(req.url);
+  // fs.writeFile(`./logs/${logID}`, )
+  next();
+});
 app.use('/products', products);
 app.use('/articles', articles);
 

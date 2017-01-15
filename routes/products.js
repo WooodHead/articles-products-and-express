@@ -59,7 +59,7 @@ router.delete('/:id', (req, res) => {
     req.flash("error", "Delete unsuccessful..");
     res.redirect(303, `/products/${targetID}`);
   }
-  req.flash("info", `${productMap[targetID]} successfully deleted!`);
+  req.flash("info", "Delete successful!");
   res.redirect(303, '/products');
 });
 
@@ -78,7 +78,7 @@ router.get('/:id/edit', (req, res) => {
 });
 
 function postIsValid(product) {
-  if(product.hasOwnProperty('name') && product.hasOwnProperty('price') && product.hasOwnProperty('inventory') && product.name ==='aukai'){
+  if(product.hasOwnProperty('name') && product.hasOwnProperty('price') && product.hasOwnProperty('inventory')){
     return true;
   } else {
     return false;
