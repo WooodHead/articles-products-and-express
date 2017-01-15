@@ -1,6 +1,8 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const flash = require('connect-flash');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const handlebars = require('express-handlebars');
 const app = express();
@@ -18,13 +20,9 @@ app.set('view engine', 'hbs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}));
-app.use(require('connect-flash')());
+app.use(cookieParser('keyboard cat'));
+  app.use(session({ cookie: { maxAge: 60000 }}));
+  app.use(flash());
 app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
   next();

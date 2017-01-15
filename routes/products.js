@@ -5,6 +5,8 @@ const products = require('../db/products');
 const productMap = products.productList;
 
 router.get('/', (req, res) => {
+  //console.log(res.locals.messages());
+  //console.log(req.flash("info"));
   res.render('index', products);
 });
 
@@ -21,10 +23,10 @@ router.post('/', (req, res) => {
     };
     productMap[ID] = productObject;
     ID++;
-    req.flash("info", "posting stuff");
     res.redirect('/products');
   } else {
-    res.redirect(400, '/products/new');
+    req.flash("error", "Invalid Post..Create new product!");
+    res.redirect('/products/new');
   }
 });
 
@@ -61,7 +63,7 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get('/new', (req, res) => {
-  res.render('./partials/new');
+  res.render('./partials/new', {messages: res.locals.messages()});
 });
 
 router.get('/:id', (req, res) => {
@@ -75,7 +77,7 @@ router.get('/:id/edit', (req, res) => {
 });
 
 function postIsValid(product) {
-  if(product.hasOwnProperty('name') && product.hasOwnProperty('price') && product.hasOwnProperty('inventory')){
+  if(product.hasOwnProperty('name') && product.hasOwnProperty('price') && product.hasOwnProperty('inventory') && product.name ==='aukai'){
     return true;
   } else {
     return false;
