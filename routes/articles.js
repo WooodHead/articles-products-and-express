@@ -36,6 +36,7 @@ router.put('/:title', (req, res) => {
       storedArticle.author = newArticle.author;
     }
   } else {
+    req.flash("error", "Update failed...try again!");
     res.redirect(303,`/articles/${storedArticle.urlTitle}/edit`);
   }
   res.redirect(303, `/articles/${storedArticle.urlTitle}`);
@@ -53,7 +54,7 @@ router.delete('/:title', (req, res) => {
 });
 
 router.get('/new', (req, res) => {
-  res.render('./partials/new_article', {messages: res.locals.messages});
+  res.render('./partials/new_article', {messages: res.locals.messages()});
 });
 
 router.get('/:title', (req, res) => {
@@ -64,7 +65,7 @@ router.get('/:title', (req, res) => {
 router.get('/:title/edit', (req, res) => {
   console.log(req.params.title);
   let articleKey = req.params.title;
-  res.render('./partials/edit_article', articleMap[articleKey]);
+  res.render('./partials/edit_article', {articles: articleMap[articleKey], messages: res.locals.messages()});
 });
 
 function bodyIsValid(article) {
