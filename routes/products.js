@@ -8,7 +8,6 @@ const deleteIsValid = products.deleteValidator;
 const storeProduct = products.storeProduct;
 const productMap = products.getProductList();
 const updatePropertiesWith = products.updatePropertiesWith;
-const createID = products.createID;
 
 router.get('/', (req, res) => {
   res.render('index', {products: productMap, productMessages: res.locals.messages()});
@@ -17,13 +16,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   let newProduct = req.body;
   if(postIsValid(newProduct)){
-    let productObject = {
-      id: createID(),
-      name: newProduct.name,
-      price: parseInt(newProduct.price),
-      inventory: parseInt(newProduct.inventory)
-    };
-    storeProduct(productObject);
+    storeProduct(newProduct);
     res.redirect('/products');
   } else {
     req.flash("error", "Invalid Post..Create new product!");

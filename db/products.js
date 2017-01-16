@@ -13,7 +13,13 @@ function getProductList() {
 }
 
 function storeProduct(product) {
-  productList[product.id] = product;
+  let productObject = {
+      id: createID(),
+      name: product.name,
+      price: parseInt(product.price),
+      inventory: parseInt(product.inventory)
+    };
+  productList[productObject.id] = productObject;
 }
 
 function postIsValid(product) {
@@ -63,7 +69,6 @@ function updatePropertiesWith(product) {
 
 
 module.exports = {
-  createID: createID,
   getProductList:getProductList,
   storeProduct: storeProduct,
   postValidator: postIsValid,

@@ -5,7 +5,13 @@ function getArticles() {
 }
 
 function storeArticle(article) {
-  articleList[article.title] = article;
+  let savedArticle = {
+      title: article.title,
+      body: article.body,
+      author: article.author,
+      urlTitle: encodeURIComponent(article.title)
+    };
+  articleList[savedArticle.title] = savedArticle;
 }
 
 function bodyIsValid(article) {

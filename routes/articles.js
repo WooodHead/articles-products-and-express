@@ -15,18 +15,13 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   let newArticle = req.body;
   if(bodyIsValid(newArticle)){
-    let savedArticle = {
-      title: newArticle.title,
-      body: newArticle.body,
-      author: newArticle.author,
-      urlTitle: encodeURIComponent(newArticle.title)
-    };
-    if(articleMap.hasOwnProperty(savedArticle.title)){
+    if(articleMap.hasOwnProperty(newArticle.title)){
       req.flash("error", "Sorry product exists..create new product");
       res.redirect('/articles/new');
+    } else {
+      storeArticle(newArticle);
+      res.redirect('/articles');
     }
-    storeArticle(savedArticle);
-    res.redirect('/articles');
   } else {
     req.flash("error", "Invalid post..create new article!");
     res.redirect('/articles/new');
