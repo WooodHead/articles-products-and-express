@@ -20,9 +20,12 @@ router.post('/', (req, res) => {
     let productObject = {
       id: ID,
       name: newProduct.name,
-      price: newProduct.price,
-      inventory: newProduct.inventory
+      price: parseInt(newProduct.price),
+      inventory: parseInt(newProduct.inventory)
     };
+    console.log("price is type: ", typeof productObject.price);
+    console.log("id is type: ", typeof productObject.id);
+    console.log("inventory is type: ", typeof productObject.inventory);
     storeProduct(productObject);
     ID++;
     res.redirect('/products');
