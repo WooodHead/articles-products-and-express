@@ -10,8 +10,12 @@ function storeArticle(article) {
 
 function bodyIsValid(article) {
   if(article.hasOwnProperty('title') && article.hasOwnProperty('body') && article.hasOwnProperty('author')){
-    if(isNaN(parseInt(article.title)) && isNaN(parseInt(article.body)) && isNaN(parseInt(article.author))){
-     return true;
+    if(article.title !== '' && article.body !== '' && article.author !== ''){
+      if(isNaN(parseInt(article.title)) && isNaN(parseInt(article.body)) && isNaN(parseInt(article.author))){
+       return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }

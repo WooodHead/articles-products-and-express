@@ -18,9 +18,13 @@ function storeProduct(product) {
 
 function postIsValid(product) {
   if(product.hasOwnProperty('name') && product.hasOwnProperty('price') && product.hasOwnProperty('inventory')){
-    if(isNaN(parseInt(product.name)) && typeof parseInt(product.price) === "number" && typeof parseInt(product.inventory) === "number"){
-      return true;
-    } else {
+    if(product.name !== '' && product.price !== '' && product.inventory !== ''){
+      if(isNaN(parseInt(product.name)) && typeof parseInt(product.price) === "number" && typeof parseInt(product.inventory) === "number"){
+        return true;
+      } else {
+        return false;
+      }
+    }else {
       return false;
     }
   } else {
