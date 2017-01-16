@@ -10,8 +10,7 @@ const getProductList = products.getProductList;
 const productMap = getProductList();
 
 router.get('/', (req, res) => {
-  console.log(productMap);
-  res.render('index', {products: getProductList(), productMessages: res.locals.messages()});
+  res.render('index', {products: productMap, productMessages: res.locals.messages()});
 });
 
 let ID = 0;
