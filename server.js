@@ -33,7 +33,11 @@ app.use(methodOverride('_method'));
 app.use((req, res, next) => {
   console.log(req.method);
   console.log(req.url);
-  // fs.writeFile(`./logs/${logID}`, )
+  let date = new Date();
+  fs.writeFile(`./logs/${date}.log`, `[${req.method}] [${req.url}] [${date}]`, (err) => {
+    if (err) throw err;
+    console.log("created new log");
+  });
   next();
 });
 app.use('/products', products);
