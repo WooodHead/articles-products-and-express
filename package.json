@@ -28,6 +28,7 @@
     "express-flash": "0.0.2",
     "express-handlebars": "^3.0.0",
     "express-messages": "^1.0.1",
+    "express-request-version": "^2.0.1",
     "express-session": "^1.14.2",
     "method-override": "^2.3.7",
     "mocha": "^3.2.0",

@@ -9,6 +9,7 @@ const app = express();
 const products = require('./routes/products');
 const articles = require('./routes/articles');
 const methodOverride = require('method-override');
+const setVersion = require('express-request-version').setByPath;
 const fs = require('fs');
 
 let week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -28,6 +29,13 @@ app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+app.use('/articles', (req, res, next) => {
+  let header = JSON.stringify(req.headers);
+  req.setRequestHeader("version", "1.0");
+  console.log(req.get('content-type'));
+  console.log(req.get('version'));
   next();
 });
 app.use(methodOverride('_method'));

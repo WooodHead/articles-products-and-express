@@ -13,6 +13,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+  console.log(JSON.stringify(req.headers).version);
   let newArticle = req.body;
   let identifier = newArticle.title;
   if(bodyIsValid(newArticle)){

@@ -39,7 +39,7 @@ function titleIsValid(article, address) {
 }
 
 function isValidToDelete(address) {
-  if(articleMap.hasOwnProperty(address)){
+  if(articleList.hasOwnProperty(address)){
     return true;
   } else {
     return false;
