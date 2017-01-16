@@ -14,8 +14,9 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   let newArticle = req.body;
+  let identifier = newArticle.title;
   if(bodyIsValid(newArticle)){
-    if(articleMap.hasOwnProperty(newArticle.title)){
+    if(articleMap.hasOwnProperty(identifier)){
       req.flash("error", "Sorry product exists..create new product");
       res.redirect('/articles/new');
     } else {

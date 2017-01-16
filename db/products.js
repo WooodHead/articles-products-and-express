@@ -46,8 +46,8 @@ function putIsValid(product, addressID) {
   }
 }
 
-function deleteIsValid(address) {
-  if(productList.hasOwnProperty(address)){
+function deleteIsValid(ID) {
+  if(productList.hasOwnProperty(ID)){
     return true;
   } else {
     return false;

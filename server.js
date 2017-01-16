@@ -33,8 +33,8 @@ app.use(function (req, res, next) {
 app.use(methodOverride('_method'));
 app.use((req, res, next) => {
   let date = new Date();
-  let day = date.getDay();
-  let currentDay = week[day];
+  let index = date.getDay();
+  let currentDay = week[index];
   fs.writeFile(`./logs/${currentDay}/${date}.log`, `[${req.method}] [${req.url}] [${date}]`, (err) => {
     if (err) throw err;
     console.log("created new log");
