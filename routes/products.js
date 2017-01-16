@@ -6,8 +6,7 @@ const postIsValid = products.postValidator;
 const putIsValid = products.putValidator;
 const deleteIsValid = products.deleteValidator;
 const storeProduct = products.storeProduct;
-const getProductList = products.getProductList;
-const productMap = getProductList();
+const productMap = products.getProductList();
 
 router.get('/', (req, res) => {
   res.render('index', {products: productMap, productMessages: res.locals.messages()});

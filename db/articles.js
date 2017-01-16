@@ -1,5 +1,13 @@
 let articleList = {};
 
+function getArticles() {
+  return articleList;
+}
+
+function storeArticle(article) {
+  articleList[article.title] = article;
+}
+
 function bodyIsValid(article) {
   if(article.hasOwnProperty('title') && article.hasOwnProperty('body') && article.hasOwnProperty('author')){
     return true;
@@ -25,6 +33,8 @@ function isValidToDelete(address) {
 }
 
 module.exports = {
+  getArticles: getArticles,
+  storeArticle: storeArticle,
   bodyValidator: bodyIsValid,
   titleValidator: titleIsValid,
   deleteValidator: isValidToDelete

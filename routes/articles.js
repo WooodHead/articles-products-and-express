@@ -4,9 +4,11 @@ const articles = require('../db/articles');
 const bodyIsValid = articles.bodyValidator;
 const titleIsValid = articles.titlevalidator;
 const isValidToDelete = articles.deleteValidator;
+const storeArticle = articles.storeArticle;
+const articleMap = articles.getArticles();
 
 router.get('/', (req, res) => {
-  res.render('index', {articles: articles, articleMessages: res.locals.messages()});
+  res.render('index', {articles: articleMap, articleMessages: res.locals.messages()});
 });
 
 router.post('/', (req, res) => {
@@ -18,7 +20,7 @@ router.post('/', (req, res) => {
       author: newArticle.author,
       urlTitle: encodeURIComponent(newArticle.title)
     };
-    articleMap[newArticle.title] = savedArticle;
+    storeArticle(savedArticle);
     res.redirect('/articles');
   } else {
     req.flash("error", "Invalid post..create new article!");
@@ -47,7 +49,6 @@ router.put('/:title', (req, res) => {
 router.delete('/:title', (req, res) => {
   let articlePath = req.params.title;
   let articleAddress = encodeURIComponent(articlePath);
-  console.log(articlePath);
   if(isValidToDelete(articlePath)){
     delete articleMap[articlePath];
   } else {
