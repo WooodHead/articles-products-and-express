@@ -2,15 +2,16 @@
 const express = require('express');
 const router = express('router');
 const products = require('../db/products');
-const productMap = products.productList;
 const postIsValid = products.postValidator;
 const putIsValid = products.putValidator;
 const deleteIsValid = products.deleteValidator;
 const storeProduct = products.storeProduct;
+const getProductList = products.getProductList;
+const productMap = getProductList();
 
 router.get('/', (req, res) => {
   console.log(productMap);
-  res.render('index', {products: products, productMessages: res.locals.messages()});
+  res.render('index', {products: getProductList(), productMessages: res.locals.messages()});
 });
 
 let ID = 0;
@@ -34,7 +35,6 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    console.log(req.body);
     let newProduct = req.body;
     let newID = req.body.id;
     let addressID = req.params.id;
