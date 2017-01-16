@@ -1,6 +1,12 @@
 
-
 let productList = {};
+
+function getProductList() {
+  return productList;
+}
+function storeProduct(product) {
+  productList[product.id] = product;
+}
 
 function postIsValid(product) {
   if(product.hasOwnProperty('name') && product.hasOwnProperty('price') && product.hasOwnProperty('inventory')){
@@ -28,7 +34,8 @@ function deleteIsValid(address) {
 
 
 module.exports = {
-  productList: productList,
+  getProductList:getProductList,
+  storeProduct: storeProduct,
   postValidator: postIsValid,
   putValidator: putIsValid,
   deleteValidator: deleteIsValid

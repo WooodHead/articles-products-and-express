@@ -6,6 +6,7 @@ const productMap = products.productList;
 const postIsValid = products.postValidator;
 const putIsValid = products.putValidator;
 const deleteIsValid = products.deleteValidator;
+const storeProduct = products.storeProduct;
 
 router.get('/', (req, res) => {
   console.log(productMap);
@@ -23,7 +24,7 @@ router.post('/', (req, res) => {
       price: newProduct.price,
       inventory: newProduct.inventory
     };
-    productMap[ID] = productObject;
+    storeProduct(productObject);
     ID++;
     res.redirect('/products');
   } else {
