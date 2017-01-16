@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express('router');
 const articles = require('../db/articles');
-let articleMap = articles.articleList;
+const bodyIsValid = articles.bodyValidator;
+const titleIsValid = articles.titlevalidator;
+const isValidToDelete = articles.deleteValidator;
 
 router.get('/', (req, res) => {
   res.render('index', {articles: articles, articleMessages: res.locals.messages()});
@@ -69,30 +71,5 @@ router.get('/:title/edit', (req, res) => {
   let articleKey = req.params.title;
   res.render('./partials/edit_article', {articles: articleMap[articleKey], messages: res.locals.messages()});
 });
-
-
-function bodyIsValid(article) {
-  if(article.hasOwnProperty('title') && article.hasOwnProperty('body') && article.hasOwnProperty('author')){
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function titleIsValid(article, address) {
-  if(article.hasOwnProperty('title') && article.title === address && articleMap.hasOwnProperty(article.title)){
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function isValidToDelete(address) {
-  if(articleMap.hasOwnProperty(address)){
-    return true;
-  } else {
-    return false;
-  }
-}
 
 module.exports = router;
