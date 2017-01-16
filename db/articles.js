@@ -10,14 +10,18 @@ function storeArticle(article) {
 
 function bodyIsValid(article) {
   if(article.hasOwnProperty('title') && article.hasOwnProperty('body') && article.hasOwnProperty('author')){
-    return true;
+    if(isNaN(parseInt(article.title)) && isNaN(parseInt(article.body)) && isNaN(parseInt(article.author))){
+     return true;
+    } else {
+      return false;
+    }
   } else {
     return false;
   }
 }
 
 function titleIsValid(article, address) {
-  if(article.hasOwnProperty('title') && article.title === address && articleMap.hasOwnProperty(article.title)){
+  if(article.hasOwnProperty('title') && article.title === address && articleList.hasOwnProperty(article.title)){
     return true;
   } else {
     return false;
@@ -32,10 +36,21 @@ function isValidToDelete(address) {
   }
 }
 
+function updatePropertiesWith(article) {
+  let articleKey = article.title;
+  if(article.hasOwnProperty('body')){
+    articleList[articleKey].body = article.body;
+  }
+  if(article.hasOwnProperty('author')){
+    articleList[articleKey].author = article.author;
+  }
+}
+
 module.exports = {
   getArticles: getArticles,
   storeArticle: storeArticle,
   bodyValidator: bodyIsValid,
   titleValidator: titleIsValid,
-  deleteValidator: isValidToDelete
+  deleteValidator: isValidToDelete,
+  updatePropertiesWith: updatePropertiesWith
 };

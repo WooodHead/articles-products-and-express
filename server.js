@@ -11,7 +11,8 @@ const articles = require('./routes/articles');
 const methodOverride = require('method-override');
 const fs = require('fs');
 
-let logID = 0;
+let week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
 const hbs = handlebars.create({
   extname: '.hbs',
   defaultLayout: 'app'
@@ -23,15 +24,14 @@ app.set('view engine', 'hbs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser('keyboard cat'));
-  app.use(session({ cookie: { maxAge: 60000 }}));
-  app.use(flash());
+app.use(session({ cookie: { maxAge: 60000 }}));
+app.use(flash());
 app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
   next();
 });
 app.use(methodOverride('_method'));
 app.use((req, res, next) => {
-  let week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   let date = new Date();
   let day = date.getDay();
   let currentDay = week[day];

@@ -2,10 +2,11 @@ const express = require('express');
 const router = express('router');
 const articles = require('../db/articles');
 const bodyIsValid = articles.bodyValidator;
-const titleIsValid = articles.titlevalidator;
+const titleIsValid = articles.titleValidator;
 const isValidToDelete = articles.deleteValidator;
 const storeArticle = articles.storeArticle;
 const articleMap = articles.getArticles();
+const updatePropertiesWith = articles.updatePropertiesWith;
 
 router.get('/', (req, res) => {
   res.render('index', {articles: articleMap, articleMessages: res.locals.messages()});
@@ -20,6 +21,10 @@ router.post('/', (req, res) => {
       author: newArticle.author,
       urlTitle: encodeURIComponent(newArticle.title)
     };
+    if(articleMap.hasOwnProperty(savedArticle.title)){
+      req.flash("error", "Sorry product exists..create new product");
+      res.redirect('/articles/new');
+    }
     storeArticle(savedArticle);
     res.redirect('/articles');
   } else {
@@ -30,20 +35,15 @@ router.post('/', (req, res) => {
 
 router.put('/:title', (req, res) => {
   let newArticle = req.body;
+  let articleKey = req.body.title;
   let articlePath = req.params.title;
-  let storedArticle = articleMap[newArticle.title];
   if(titleIsValid(newArticle, articlePath)){
-    if(newArticle.hasOwnProperty('body')){
-      storedArticle.body = newArticle.body;
-    }
-    if(newArticle.hasOwnProperty('author')){
-      storedArticle.author = newArticle.author;
-    }
+    updatePropertiesWith(newArticle);
   } else {
     req.flash("error", "Update failed...try again!");
-    res.redirect(303,`/articles/${storedArticle.urlTitle}/edit`);
+    res.redirect(303,`/articles/${articleMap[articleKey].urlTitle}/edit`);
   }
-  res.redirect(303, `/articles/${storedArticle.urlTitle}`);
+  res.redirect(303, `/articles/${articleMap[articleKey].urlTitle}`);
 });
 
 router.delete('/:title', (req, res) => {
@@ -68,7 +68,6 @@ router.get('/:title', (req, res) => {
   res.render('./partials/article', {articles: articleMap[articleKey], messages: res.locals.messages()});
 });
 router.get('/:title/edit', (req, res) => {
-  console.log(req.params.title);
   let articleKey = req.params.title;
   res.render('./partials/edit_article', {articles: articleMap[articleKey], messages: res.locals.messages()});
 });

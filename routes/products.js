@@ -7,27 +7,23 @@ const putIsValid = products.putValidator;
 const deleteIsValid = products.deleteValidator;
 const storeProduct = products.storeProduct;
 const productMap = products.getProductList();
+const updatePropertiesWith = products.updatePropertiesWith;
+const createID = products.createID;
 
 router.get('/', (req, res) => {
   res.render('index', {products: productMap, productMessages: res.locals.messages()});
 });
 
-let ID = 0;
-
 router.post('/', (req, res) => {
   let newProduct = req.body;
   if(postIsValid(newProduct)){
     let productObject = {
-      id: ID,
+      id: createID(),
       name: newProduct.name,
       price: parseInt(newProduct.price),
       inventory: parseInt(newProduct.inventory)
     };
-    console.log("price is type: ", typeof productObject.price);
-    console.log("id is type: ", typeof productObject.id);
-    console.log("inventory is type: ", typeof productObject.inventory);
     storeProduct(productObject);
-    ID++;
     res.redirect('/products');
   } else {
     req.flash("error", "Invalid Post..Create new product!");
@@ -37,23 +33,15 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
     let newProduct = req.body;
-    let newID = req.body.id;
     let addressID = req.params.id;
+    let targetID = req.body.id;
   if(putIsValid(newProduct, addressID)){
-    if(newProduct.hasOwnProperty('name')){
-      productMap[newID].name = newProduct.name;
-    }
-    if(newProduct.hasOwnProperty('price')){
-      productMap[newID].price = newProduct.price;
-    }
-    if(newProduct.hasOwnProperty('inventory')){
-      productMap[newID].inventory = newProduct.inventory;
-    }
-    } else {
+    updatePropertiesWith(newProduct);
+  } else {
       req.flash("error", "Update failed..try again!");
-      res.redirect(303, `/products/${newID}/edit`);
+      res.redirect(303, `/products/${targetID}/edit`);
     }
-    res.redirect(303, `/products/${newID}`);
+    res.redirect(303, `/products/${targetID}`);
 });
 
 router.delete('/:id', (req, res) => {
