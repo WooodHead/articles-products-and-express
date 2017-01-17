@@ -4,6 +4,18 @@ function getArticles() {
   return articleList;
 }
 
+function checkHeaderVersion(header) {
+  if(header.hasOwnProperty('version')){
+    if(header.version === "1.0"){
+      return true;
+    } else {
+        return false;
+      }
+  } else {
+    return false;
+  }
+}
+
 function storeArticle(article) {
   let savedArticle = {
       title: article.title,

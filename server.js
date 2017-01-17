@@ -31,12 +31,21 @@ app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
   next();
 });
-app.use('/articles', (req, res, next) => {
-  let header = JSON.stringify(req.headers);
-  req.setRequestHeader("version", "1.0");
-  console.log(req.get('content-type'));
-  console.log(req.get('version'));
+app.use((req, res, next) => {
+  req.headers.version = "1.1";
   next();
+});
+app.use('/articles', (req, res, next) => {
+  console.log(req.headers.version);
+  if(req.headers.hasOwnProperty('version')){
+    if(req.headers.version === "1.0"){
+      next();
+    } else {
+      res.json({"error": "bad headers"});
+    }
+  } else {
+    res.json({"error": "no version.."});
+  }
 });
 app.use(methodOverride('_method'));
 app.use((req, res, next) => {
@@ -45,12 +54,11 @@ app.use((req, res, next) => {
   let currentDay = week[index];
   fs.writeFile(`./logs/${currentDay}/${date}.log`, `[${req.method}] [${req.url}] [${date}]`, (err) => {
     if (err) throw err;
-    console.log("created new log");
+    console.log(`new log ${date}`);
   });
   next();
 });
 app.use('/products', products);
 app.use('/articles', articles);
-
 
 module.exports = app;
