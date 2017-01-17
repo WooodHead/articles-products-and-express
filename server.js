@@ -38,7 +38,6 @@ app.use((req, res, next) => {
   setHeaderVersion(req);
   next();
 });
-
 app.use('/articles', (req, res, next) => {
   let header = req.headers;
   if(checkHeaderVersion(header)){
@@ -46,10 +45,7 @@ app.use('/articles', (req, res, next) => {
   } else {
     res.json({"error": "bad headers"});
   }
-
 });
-
-app.use(methodOverride('_method'));
 app.use((req, res, next) => {
   let date = new Date();
   let index = date.getDay();
@@ -60,6 +56,7 @@ app.use((req, res, next) => {
   });
   next();
 });
+app.use(methodOverride('_method'));
 app.use('/products', products);
 app.use('/articles', articles);
 
