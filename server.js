@@ -6,11 +6,14 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const handlebars = require('express-handlebars');
 const app = express();
+const serverHelper = require('./db/server');
 const products = require('./routes/products');
 const articles = require('./routes/articles');
 const methodOverride = require('method-override');
-const setVersion = require('express-request-version').setByPath;
 const fs = require('fs');
+
+const setHeaderVersion = serverHelper.setHeaderVersion;
+const checkHeaderVersion = serverHelper.checkHeaderVersion;
 
 let week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -32,21 +35,20 @@ app.use(function (req, res, next) {
   next();
 });
 app.use((req, res, next) => {
-  req.headers.version = "1.1";
+  setHeaderVersion(req);
   next();
 });
+
 app.use('/articles', (req, res, next) => {
-  console.log(req.headers.version);
-  if(req.headers.hasOwnProperty('version')){
-    if(req.headers.version === "1.0"){
-      next();
-    } else {
-      res.json({"error": "bad headers"});
-    }
+  let header = req.headers;
+  if(checkHeaderVersion(header)){
+    next();
   } else {
-    res.json({"error": "no version.."});
+    res.json({"error": "bad headers"});
   }
+
 });
+
 app.use(methodOverride('_method'));
 app.use((req, res, next) => {
   let date = new Date();
