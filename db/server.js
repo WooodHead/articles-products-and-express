@@ -1,6 +1,6 @@
-function setHeaderVersion(request) {
-  request.headers.version = "1.0";
-}
+const fs = require('fs');
+
+let week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 function checkHeaderVersion(header) {
   if(header.hasOwnProperty('version') && header.version === "1.0"){
@@ -12,9 +12,17 @@ function checkHeaderVersion(header) {
   }
 }
 
-
+function createLogByDate(req) {
+  let date = new Date();
+  let index = date.getDay();
+  let currentDay = week[index];
+  fs.writeFile(`./logs/${currentDay}/${date}.log`, `[${req.method}] [${req.url}] [${date}]`, (err) => {
+    if (err) throw err;
+    console.log(`new log ${date}`);
+  });
+}
 
 module.exports = {
-  setHeaderVersion: setHeaderVersion,
-  checkHeaderVersion: checkHeaderVersion
+  checkHeaderVersion: checkHeaderVersion,
+  createLogByDate: createLogByDate
 };
