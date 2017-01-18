@@ -27,15 +27,12 @@ app.set('view engine', 'hbs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride('_method'));
 app.use(cookieParser('keyboard cat'));
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
-  next();
-});
-app.use((req, res, next) => {
-  setHeaderVersion(req);
   next();
 });
 app.use('/articles', (req, res, next) => {
@@ -56,7 +53,6 @@ app.use((req, res, next) => {
   });
   next();
 });
-app.use(methodOverride('_method'));
 app.use('/products', products);
 app.use('/articles', articles);
 

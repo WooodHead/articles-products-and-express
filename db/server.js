@@ -3,16 +3,15 @@ function setHeaderVersion(request) {
 }
 
 function checkHeaderVersion(header) {
-  if(header.hasOwnProperty('version')){
-    if(header.version === "1.0"){
+  if(header.hasOwnProperty('version') && header.version === "1.0"){
       return true;
-    } else {
-        return false;
-      }
+  } else if(header.hasOwnProperty('version') === false){
+    return true;
   } else {
     return false;
   }
 }
+
 
 
 module.exports = {
