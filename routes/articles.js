@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express('router');
 const articles = require('../db/articles');
-const bodyIsValid = articles.bodyValidator;
-const titleIsValid = articles.titleValidator;
+const postIsValid = articles.postValidator;
+const putIsValid = articles.putValidator;
 const isValidToDelete = articles.deleteValidator;
 const storeArticle = articles.storeArticle;
 const articleMap = articles.getArticles();
@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   let newArticle = req.body;
   let identifier = newArticle.title;
-  if(bodyIsValid(newArticle)){
+  if(postIsValid(newArticle)){
     if(articleMap.hasOwnProperty(identifier)){
       req.flash("error", "Sorry product exists..create new product");
       res.redirect('/articles/new');
@@ -33,8 +33,8 @@ router.put('/:title', (req, res) => {
   let newArticle = req.body;
   let articleKey = req.body.title;
   let articlePath = req.params.title;
-  if(titleIsValid(newArticle, articlePath)){
-    updatePropertiesWith(newArticle);
+  if(putIsValid(newArticle, articlePath)){
+    updatePropertiesWith(newArticle, req, res);
   } else {
     req.flash("error", "Update failed...try again!");
     res.redirect(303,`/articles/${articleMap[articleKey].urlTitle}/edit`);

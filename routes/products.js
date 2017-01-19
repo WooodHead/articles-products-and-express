@@ -14,6 +14,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+  console.log(productMap);
   let newProduct = req.body;
   if(postIsValid(newProduct)){
     storeProduct(newProduct);
@@ -29,7 +30,7 @@ router.put('/:id', (req, res) => {
     let addressID = req.params.id;
     let targetID = req.body.id;
   if(putIsValid(newProduct, addressID)){
-    updatePropertiesWith(newProduct);
+    updatePropertiesWith(newProduct, req, res);
   } else {
       req.flash("error", "Update failed..try again!");
       res.redirect(303, `/products/${targetID}/edit`);

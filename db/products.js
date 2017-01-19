@@ -54,16 +54,32 @@ function deleteIsValid(ID) {
   }
 }
 
-function updatePropertiesWith(product) {
+function updatePropertiesWith(product, req, res) {
+  console.log(product);
   let targetID = product.id;
   if(product.hasOwnProperty('name')){
+    if(product.name !== ''){
     productList[targetID].name = product.name;
+    } else {
+      req.flash("error", "Update failed..try again!");
+      res.redirect(303, `/products/${targetID}/edit`);
+    }
   }
   if(product.hasOwnProperty('price')){
+    if(product.price !== ''){
     productList[targetID].price = product.price;
+    } else {
+      req.flash("error", "Update failed..try again!");
+      res.redirect(303, `/products/${targetID}/edit`);
+    }
   }
   if(product.hasOwnProperty('inventory')){
-    productList[targetID].inventoryn = product.inventory;
+    if(product.inventory !==''){
+    productList[targetID].inventory = product.inventory;
+    } else {
+      req.flash("error", "Update failed..try again!");
+      res.redirect(303, `/products/${targetID}/edit`);
+    }
   }
 }
 
