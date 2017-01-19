@@ -49,7 +49,7 @@ function isValidToDelete(address) {
 function updatePropertiesWith(article, req, res) {
   let articleKey = article.title;
   if(article.hasOwnProperty('body')){
-    if(article.body !== ''){
+    if(article.body !== '' && isNaN(parseInt(article.body))){
       articleList[articleKey].body = article.body;
     } else {
       req.flash("error", "Update failed...try again!");
@@ -57,7 +57,7 @@ function updatePropertiesWith(article, req, res) {
     }
   }
   if(article.hasOwnProperty('author')){
-    if(article.author !== ''){
+    if(article.author !== '' && isNaN(parseInt(article.author))){
       articleList[articleKey].author = article.author;
     } else {
       req.flash("error", "Update failed...try again!");
