@@ -55,7 +55,6 @@ function deleteIsValid(ID) {
 }
 
 function updatePropertiesWith(product, req, res) {
-  console.log(product);
   let targetID = product.id;
   if(product.hasOwnProperty('name')){
     if(product.name !== '' && isNaN(parseInt(product.name))){

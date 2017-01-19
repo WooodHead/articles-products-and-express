@@ -11,7 +11,7 @@ const products = require('./routes/products');
 const articles = require('./routes/articles');
 const methodOverride = require('method-override');
 
-const checkHeaderVersion = serverHelper.checkHeaderVersion;
+const headerIsValid = serverHelper.headerIsValid;
 const createLogByDate = serverHelper.createLogByDate;
 
 const hbs = handlebars.create({
@@ -34,7 +34,7 @@ app.use(function (req, res, next) {
 });
 app.use('/articles', (req, res, next) => {
   let header = req.headers;
-  if(checkHeaderVersion(header)){
+  if(headerIsValid(header)){
     next();
   } else {
     res.json({"error": "bad headers"});

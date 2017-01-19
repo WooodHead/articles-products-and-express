@@ -2,7 +2,7 @@ const fs = require('fs');
 
 let week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-function checkHeaderVersion(header) {
+function headerIsValid(header) {
   if(header.hasOwnProperty('version') && header.version === "1.0"){
       return true;
   } else if(header.hasOwnProperty('version') === false){
@@ -23,6 +23,6 @@ function createLogByDate(req) {
 }
 
 module.exports = {
-  checkHeaderVersion: checkHeaderVersion,
+  headerIsValid: headerIsValid,
   createLogByDate: createLogByDate
 };
