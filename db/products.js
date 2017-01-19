@@ -66,7 +66,7 @@ function updatePropertiesWith(product, req, res) {
     }
   }
   if(product.hasOwnProperty('price')){
-    if(product.price !== '' && isNaN(parseInt(product.price))){
+    if(product.price !== '' && typeof parseInt(product.price) == "number"){
     productList[targetID].price = product.price;
     } else {
       req.flash("error", "Update failed...must have a value and can't be a number!");
@@ -74,7 +74,7 @@ function updatePropertiesWith(product, req, res) {
     }
   }
   if(product.hasOwnProperty('inventory')){
-    if(product.inventory !=='' && isNaN(parseInt(product.inventory))){
+    if(product.inventory !=='' && typeof parseInt(product.inventory) === "number"){
     productList[targetID].inventory = product.inventory;
     } else {
       req.flash("error", "Update failed...must have a value and can't be a number!");

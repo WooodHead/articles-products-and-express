@@ -17,7 +17,6 @@ describe('Articles and Products API', () => {
         .expect("content-length", '204')
         .end((err, res) => {
           if (err) throw err;
-          console.log("response is: ", res.render('index'));
         });
     });
   });
