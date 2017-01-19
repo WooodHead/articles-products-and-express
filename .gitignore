@@ -1,2 +1,8 @@
 node_modules
-logs
+logs/Monday
+logs/Tuesday
+logs/Wednesday
+logs/Thursday
+logs/Friday
+logs/Saturday
+logs/Sunday
