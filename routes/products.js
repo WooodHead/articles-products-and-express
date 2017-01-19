@@ -32,7 +32,7 @@ router.put('/:id', (req, res) => {
   if(putIsValid(newProduct, addressID)){
     updatePropertiesWith(newProduct, req, res);
   } else {
-      req.flash("error", "Update failed..try again!");
+      req.flash("error", "Update failed..can't find item...try again!");
       res.redirect(303, `/products/${targetID}/edit`);
     }
     res.redirect(303, `/products/${targetID}`);

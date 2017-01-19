@@ -61,7 +61,7 @@ function updatePropertiesWith(product, req, res) {
     if(product.name !== '' && isNaN(parseInt(product.name))){
     productList[targetID].name = product.name;
     } else {
-      req.flash("error", "Update failed..try again!");
+      req.flash("error", "Update failed...must have a value and can't be a number!");
       res.redirect(303, `/products/${targetID}/edit`);
     }
   }
@@ -69,7 +69,7 @@ function updatePropertiesWith(product, req, res) {
     if(product.price !== '' && isNaN(parseInt(product.price))){
     productList[targetID].price = product.price;
     } else {
-      req.flash("error", "Update failed..try again!");
+      req.flash("error", "Update failed...must have a value and can't be a number!");
       res.redirect(303, `/products/${targetID}/edit`);
     }
   }
@@ -77,7 +77,7 @@ function updatePropertiesWith(product, req, res) {
     if(product.inventory !=='' && isNaN(parseInt(product.inventory))){
     productList[targetID].inventory = product.inventory;
     } else {
-      req.flash("error", "Update failed..try again!");
+      req.flash("error", "Update failed...must have a value and can't be a number!");
       res.redirect(303, `/products/${targetID}/edit`);
     }
   }

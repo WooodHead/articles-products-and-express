@@ -36,7 +36,7 @@ router.put('/:title', (req, res) => {
   if(putIsValid(newArticle, articlePath)){
     updatePropertiesWith(newArticle, req, res);
   } else {
-    req.flash("error", "Update failed...try again!");
+    req.flash("error", "Update failed...can't find item...try again!");
     res.redirect(303,`/articles/${articleMap[articleKey].urlTitle}/edit`);
   }
   res.redirect(303, `/articles/${articleMap[articleKey].urlTitle}`);

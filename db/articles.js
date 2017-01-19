@@ -52,7 +52,7 @@ function updatePropertiesWith(article, req, res) {
     if(article.body !== '' && isNaN(parseInt(article.body))){
       articleList[articleKey].body = article.body;
     } else {
-      req.flash("error", "Update failed...try again!");
+      req.flash("error", "Update failed...must have a value and can't be a number!");
       res.redirect(303,`/articles/${articleList[articleKey].urlTitle}/edit`);
     }
   }
@@ -60,7 +60,7 @@ function updatePropertiesWith(article, req, res) {
     if(article.author !== '' && isNaN(parseInt(article.author))){
       articleList[articleKey].author = article.author;
     } else {
-      req.flash("error", "Update failed...try again!");
+      req.flash("error", "Update failed...must have a value and can't be a number!");
       res.redirect(303,`/articles/${articleList[articleKey].urlTitle}/edit`);
     }
   }
