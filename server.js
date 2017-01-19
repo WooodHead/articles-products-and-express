@@ -44,7 +44,6 @@ app.use((req, res, next) => {
   createLogByDate(req);
   next();
 });
-
 app.use('/products', products);
 app.use('/articles', articles);
 

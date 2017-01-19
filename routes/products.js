@@ -14,7 +14,6 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  console.log(productMap);
   let newProduct = req.body;
   if(postIsValid(newProduct)){
     storeProduct(newProduct);
