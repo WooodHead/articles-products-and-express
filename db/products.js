@@ -103,9 +103,9 @@ function updatePropertiesWith(product, req, res) {
   if(product.hasOwnProperty('name')){
     if(product.name !== '' && isNaN(parseInt(product.name))){
     //productList[targetID].name = product.name;
-        db.one(`UPDATE products
+        db.none(`UPDATE products
                 SET name = '${product.name}'
-                WHERE id = '${targetID}'`);
+                WHERE id = ${targetID}`);
     } else {
       req.flash("error", "Update failed...must have a value and can't be a number!");
       res.redirect(303, `/products/${targetID}/edit`);
@@ -113,9 +113,9 @@ function updatePropertiesWith(product, req, res) {
   }
   if(product.hasOwnProperty('price')){
     if(product.price !== '' && typeof parseInt(product.price) == "number"){
-        db.one(`UPDATE products
-                SET price = '${product.price}'
-                WHERE id = '${targetID}'`);
+        db.none(`UPDATE products
+                SET price = ${product.price}
+                WHERE id = ${targetID}`);
     //productList[targetID].price = product.price;
     } else {
       req.flash("error", "Update failed...must have a value and can't be a number!");
@@ -124,9 +124,9 @@ function updatePropertiesWith(product, req, res) {
   }
   if(product.hasOwnProperty('inventory')){
     if(product.inventory !=='' && typeof parseInt(product.inventory) === "number"){
-        db.one(`UPDATE products
-                SET inventory = '${product.inventory}'
-                WHERE id = '${targetID}'`);
+        db.none(`UPDATE products
+                SET inventory = ${product.inventory}
+                WHERE id = ${targetID}`);
     //productList[targetID].inventory = product.inventory;
     } else {
       req.flash("error", "Update failed...must have a value and can't be a number!");
