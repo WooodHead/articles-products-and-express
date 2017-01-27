@@ -6,11 +6,11 @@ const postIsValid = products.postValidator;
 const putIsValid = products.putValidator;
 const deleteIsValid = products.deleteValidator;
 const storeProduct = products.storeProduct;
-const productMap = products.getProductList();
 const updatePropertiesWith = products.updatePropertiesWith;
-
+const getProductList = products.getProductList;
 router.get('/', (req, res) => {
-  res.render('index', {products: productMap, productMessages: res.locals.messages()});
+  getProductList(res);
+  //res.render('index', {products: productMap, productMessages: res.locals.messages()});
 });
 
 router.post('/', (req, res) => {

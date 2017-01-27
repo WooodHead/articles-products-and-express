@@ -1,25 +1,48 @@
+const PG_PASS = process.env.PG_PASS;
+const pgp = require('pg-promise')();
+const db = pgp({
+    host: 'localhost',
+    port: 5432,
+    database: 'articles_products_db',
+    user: 'matthewtirrell',
+    password: PG_PASS
+});
 
-let productList = {};
 
-function createID() {
-  let ID = Math.floor(100000 + Math.random() * 900000);
-  ID = ID.toString().substring(0,4);
-  ID = parseInt(ID);
-  return ID;
-}
 
-function getProductList() {
-  return productList;
+
+// function createID() {
+//   let ID = Math.floor(100000 + Math.random() * 900000);
+//   ID = ID.toString().substring(0,4);
+//   ID = parseInt(ID);
+//   return ID;
+// }
+
+
+function getProductList(res) {
+  db.any('SELECT * FROM products')
+    .then( result => {
+          res.render('index', {products: result, productMessages: res.locals.messages()});
+    })
+    .catch( err => console.error(err));
 }
 
 function storeProduct(product) {
-  let productObject = {
-      id: createID(),
-      name: product.name,
-      price: parseInt(product.price),
-      inventory: parseInt(product.inventory)
-    };
-  productList[productObject.id] = productObject;
+
+    db.one(`INSERT INTO products
+        (
+        name,
+        price,
+        inventory
+        )
+        VALUES
+        (
+        '${product.name}',
+        ${parseInt(product.price)},
+        ${parseInt(product.inventory)}
+        )`).then( result => {
+            console.log("result", result);
+        }).catch(err => console.error(err));
 }
 
 function postIsValid(product) {
