@@ -43,12 +43,13 @@ function storeProduct(product, req, res) {
         VALUES
         (
         '${product.name}',
-        ${parseInt(product.price)},
-        ${parseInt(product.inventory)}
-        )`).then( result => {
-            console.log("result", result);
+        ${product.price},
+        ${product.inventory}
+        )`).then( _ => {
+            console.log("success");
+            res.redirect('/products');
         }).catch(err => {
-            req.flash("error", "Invalid Post..Create new product!");
+            req.flash("error", "database error");
             res.redirect('/products/new');
         });
 }
