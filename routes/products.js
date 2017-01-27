@@ -13,15 +13,26 @@ const getSpecificProduct = products.getSpecificProduct;
 const deleteProduct = products.deleteProduct;
 
 router.get('/', (req, res) => {
-  getProductList(res);
+  getProductList()
+       .then( result => {
+                      res.render('index', {products: result, productMessages: res.locals.messages()});
+                })
+                .catch( err => console.error(err));
   //res.render('index', {products: productMap, productMessages: res.locals.messages()});
 });
 
 router.post('/', (req, res) => {
   let newProduct = req.body;
   if(postIsValid(newProduct)){
-    storeProduct(newProduct, req, res);
-    res.redirect('/products');
+    storeProduct(newProduct)
+        .then( _ => {
+            res.redirect('/products');
+        })
+        .catch( err => {
+            req.flash("error", err.message);
+            res.redirect('/products/new');
+        });
+    //res.redirect('/products');
   } else {
     req.flash("error", "Invalid Post..Create new product!");
     res.redirect('/products/new');
@@ -43,15 +54,24 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   let targetID = req.params.id;
-  deleteProduct(req, res, targetID);
+  deleteProduct(targetID)
+    .then( _ => {
+        req.flash("info", "Delete successful!");
+        res.redirect(303, '/products');
+    })
+    .catch( error => {
+        console.log("this is the error :", error);
+        req.flash("error", "Delete unsuccessful..");
+        res.redirect(303, `/products/`);
+    });
+
   // if(deleteIsValid(targetID)){
   //   delete productMap[targetID];
   // } else {
   //   req.flash("error", "Delete unsuccessful..");
   //   res.redirect(303, `/products/${targetID}`);
   // }
-  req.flash("info", "Delete successful!");
-            res.redirect(303, '/products');
+
 });
 
 router.get('/new', (req, res) => {
@@ -65,7 +85,11 @@ router.get('/:id', (req, res) => {
 
 router.get('/:id/edit', (req, res) => {
   targetID = req.params.id;
-  editSpecificProduct(res, targetID);
+  editSpecificProduct(targetID)
+    .then( result => {
+            res.render('./partials/edit_product', {products:result, messages: res.locals.messages()});
+        })
+        .catch( err => console.error(err));
 });
 
 module.exports = router;

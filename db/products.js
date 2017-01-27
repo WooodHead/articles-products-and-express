@@ -8,20 +8,12 @@ const db = pgp({
     password: PG_PASS
 });
 
-function getProductList(res) {
-  db.any('SELECT * FROM products')
-    .then( result => {
-          res.render('index', {products: result, productMessages: res.locals.messages()});
-    })
-    .catch( err => console.error(err));
+function getProductList() {
+  return db.any('SELECT * FROM products');
 }
 
-function editSpecificProduct(res, id) {
-    db.one(`SELECT * FROM products WHERE id = ${id}`)
-        .then( result => {
-            res.render('./partials/edit_product', {products:result, messages: res.locals.messages()});
-        })
-        .catch( err => console.error(err));
+function editSpecificProduct(id) {
+    return db.one(`SELECT * FROM products WHERE id = ${id}`);
 }
 
 function getSpecificProduct(res, id) {
@@ -32,26 +24,20 @@ function getSpecificProduct(res, id) {
         .catch( err => console.error(err));
 }
 
-function storeProduct(product, req, res) {
+function storeProduct(product) {
 
-    db.one(`INSERT INTO products
-        (
-        name,
-        price,
-        inventory
-        )
-        VALUES
-        (
-        '${product.name}',
-        ${product.price},
-        ${product.inventory}
-        )`).then( _ => {
-            console.log("success");
-            res.redirect('/products');
-        }).catch(err => {
-            req.flash("error", "database error");
-            res.redirect('/products/new');
-        });
+    return db.none(`INSERT INTO products
+                (
+                name,
+                price,
+                inventory
+                )
+                VALUES
+                (
+                '${product.name}',
+                ${parseInt(product.price)},
+                ${parseInt(product.inventory)}
+                )`);
 }
 
 function postIsValid(product) {
@@ -80,14 +66,8 @@ function putIsValid(product, addressID) {
   }
 }
 
-function deleteProduct(req, res, id) {
-    db.one(`DELETE FROM products WHERE id = ${id}`)
-
-        .catch( error => {
-            console.log("this is the error" ,error);
-            req.flash("error", error.message);
-            res.redirect(303, `/products/`);
-        } );
+function deleteProduct(id) {
+    return db.none(`DELETE FROM products WHERE id = ${id}`);
 }
 
 // function deleteIsValid(ID) {
