@@ -10,7 +10,7 @@ const updatePropertiesWith = products.updatePropertiesWith;
 const getProductList = products.getProductList;
 const editSpecificProduct = products.editSpecificProduct;
 const getSpecificProduct = products.getSpecificProduct;
-
+const deleteProduct = products.deleteProduct;
 
 router.get('/', (req, res) => {
   getProductList(res);
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   let newProduct = req.body;
   if(postIsValid(newProduct)){
-    storeProduct(newProduct);
+    storeProduct(newProduct, req, res);
     res.redirect('/products');
   } else {
     req.flash("error", "Invalid Post..Create new product!");
@@ -41,17 +41,18 @@ router.put('/:id', (req, res) => {
     res.redirect(303, `/products/${targetID}`);
 });
 
-// router.delete('/:id', (req, res) => {
-//   let targetID = req.params.id;
-//   if(deleteIsValid(targetID)){
-//     delete productMap[targetID];
-//   } else {
-//     req.flash("error", "Delete unsuccessful..");
-//     res.redirect(303, `/products/${targetID}`);
-//   }
-//   req.flash("info", "Delete successful!");
-//   res.redirect(303, '/products');
-// });
+router.delete('/:id', (req, res) => {
+  let targetID = req.params.id;
+  deleteProduct(req, res, targetID);
+  // if(deleteIsValid(targetID)){
+  //   delete productMap[targetID];
+  // } else {
+  //   req.flash("error", "Delete unsuccessful..");
+  //   res.redirect(303, `/products/${targetID}`);
+  // }
+  req.flash("info", "Delete successful!");
+            res.redirect(303, '/products');
+});
 
 router.get('/new', (req, res) => {
   res.render('./partials/new_product', {messages: res.locals.messages()});
@@ -64,7 +65,7 @@ router.get('/:id', (req, res) => {
 
 router.get('/:id/edit', (req, res) => {
   targetID = req.params.id;
-  getSpecificProduct(res, targetID);
+  editSpecificProduct(res, targetID);
 });
 
 module.exports = router;

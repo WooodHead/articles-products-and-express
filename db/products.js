@@ -32,7 +32,7 @@ function getSpecificProduct(res, id) {
         .catch( err => console.error(err));
 }
 
-function storeProduct(product) {
+function storeProduct(product, req, res) {
 
     db.one(`INSERT INTO products
         (
@@ -47,7 +47,10 @@ function storeProduct(product) {
         ${parseInt(product.inventory)}
         )`).then( result => {
             console.log("result", result);
-        }).catch(err => console.error(err));
+        }).catch(err => {
+            req.flash("error", "Invalid Post..Create new product!");
+            res.redirect('/products/new');
+        });
 }
 
 function postIsValid(product) {
@@ -66,12 +69,24 @@ function postIsValid(product) {
   }
 }
 
+
+
 function putIsValid(product, addressID) {
   if(product.hasOwnProperty('id') && product.id === addressID){
     return true;
   } else {
     return false;
   }
+}
+
+function deleteProduct(req, res, id) {
+    db.one(`DELETE FROM products WHERE id = ${id}`)
+
+        .catch( error => {
+            console.log("this is the error" ,error);
+            req.flash("error", error.message);
+            res.redirect(303, `/products/`);
+        } );
 }
 
 // function deleteIsValid(ID) {
@@ -127,6 +142,7 @@ module.exports = {
   storeProduct: storeProduct,
   postValidator: postIsValid,
   putValidator: putIsValid,
+  deleteProduct: deleteProduct,
   //deleteValidator: deleteIsValid,
   updatePropertiesWith: updatePropertiesWith
 };
