@@ -3,26 +3,35 @@ const router = express('router');
 const articles = require('../db/articles');
 const postIsValid = articles.postValidator;
 const putIsValid = articles.putValidator;
-const isValidToDelete = articles.deleteValidator;
+const deleteArticle = articles.deleteArticle;
 const storeArticle = articles.storeArticle;
-const articleMap = articles.getArticles();
+const getArticles = articles.getArticles;
+const getSpecificArticle = articles.getSpecificArticle;
 const updatePropertiesWith = articles.updatePropertiesWith;
 
 router.get('/', (req, res) => {
-  res.render('index', {articles: articleMap, articleMessages: res.locals.messages()});
+    getArticles()
+        .then(articleMap => {
+            res.render('index', {articles: articleMap, articleMessages: res.locals.messages()});
+        })
+        .catch( error => {
+            console.log(error);
+        });
+
 });
 
 router.post('/', (req, res) => {
   let newArticle = req.body;
   let articleKey = newArticle.title;
   if(postIsValid(newArticle)){
-    if(articleMap.hasOwnProperty(articleKey)){
-      req.flash("error", "Sorry article exists..create new article");
-      res.redirect('/articles/new');
-    } else {
-      storeArticle(newArticle);
-      res.redirect('/articles');
-    }
+        storeArticle(newArticle)
+            .then( _ => {
+                res.redirect('/articles');
+            })
+            .catch( error => {
+                req.flash("error", error.msg);
+                res.redirect('/articles/new');
+            });
   } else {
     req.flash("error", "Invalid post..create new article!");
     res.redirect('/articles/new');
@@ -31,26 +40,34 @@ router.post('/', (req, res) => {
 
 router.put('/:title', (req, res) => {
   let newArticle = req.body;
+  console.log(newArticle);
   let articleKey = req.body.title;
   let articlePath = req.params.title;
   if(putIsValid(newArticle, articlePath)){
-    updatePropertiesWith(newArticle, req, res);
+    updatePropertiesWith(newArticle, articlePath)
+        .then( _ => {
+            res.redirect(303, `/articles/${encodeURIComponent(articleKey)}`);
+        })
+        .catch( error => {
+            req.flash("error", "Update failed..invalid form entry..");
+            res.redirect(303,`/articles/${encodeURIComponent(articleKey)}/edit`);
+        });
   } else {
     req.flash("error", "Update failed...can't find item...try again!");
-    res.redirect(303,`/articles/${articleMap[articleKey].urlTitle}/edit`);
+    res.redirect(303,`/articles/${encodeURIComponent(articleKey)}/edit`);
   }
-  res.redirect(303, `/articles/${articleMap[articleKey].urlTitle}`);
 });
 
 router.delete('/:title', (req, res) => {
   let articlePath = req.params.title;
   let articleAddress = encodeURIComponent(articlePath);
-  if(isValidToDelete(articlePath)){
-    delete articleMap[articlePath];
-  } else {
-    req.flash("error", "Delete unsuccessful...");
-    res.redirect(303,`/articles/${articleAddress}`);
-  }
+  deleteArticle(articlePath);
+  // if(isValidToDelete(articlePath)){
+  //   delete articleMap[articlePath];
+  // } else {
+  //   req.flash("error", "Delete unsuccessful...");
+  //   res.redirect(303,`/articles/${articleAddress}`);
+  // }
   req.flash("info", "Delete success!");
   res.redirect(303, '/articles');
 });
@@ -61,11 +78,19 @@ router.get('/new', (req, res) => {
 
 router.get('/:title', (req, res) => {
   let articleKey = req.params.title;
-  res.render('./partials/article', {articles: articleMap[articleKey], messages: res.locals.messages()});
+  getSpecificArticle(articleKey)
+    .then( article => {
+        res.render('./partials/article', {articles: article, messages: res.locals.messages()});
+    })
+    .catch( error => console.error(error));
 });
 router.get('/:title/edit', (req, res) => {
   let articleKey = req.params.title;
-  res.render('./partials/edit_article', {articles: articleMap[articleKey], messages: res.locals.messages()});
+  getSpecificArticle(articleKey)
+    .then( article => {
+        res.render('./partials/edit_article', {articles: article, messages: res.locals.messages()});
+    })
+    .catch( error => console.error(error));
 });
 
 module.exports = router;

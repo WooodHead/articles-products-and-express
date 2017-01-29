@@ -8,7 +8,6 @@ const deleteIsValid = products.deleteValidator;
 const storeProduct = products.storeProduct;
 const updatePropertiesWith = products.updatePropertiesWith;
 const getProductList = products.getProductList;
-const editSpecificProduct = products.editSpecificProduct;
 const getSpecificProduct = products.getSpecificProduct;
 const deleteProduct = products.deleteProduct;
 
@@ -17,8 +16,7 @@ router.get('/', (req, res) => {
        .then( result => {
                       res.render('index', {products: result, productMessages: res.locals.messages()});
                 })
-                .catch( err => console.error(err));
-  //res.render('index', {products: productMap, productMessages: res.locals.messages()});
+         .catch( error => console.error(error));
 });
 
 router.post('/', (req, res) => {
@@ -32,7 +30,6 @@ router.post('/', (req, res) => {
             req.flash("error", err.message);
             res.redirect('/products/new');
         });
-    //res.redirect('/products');
   } else {
     req.flash("error", "Invalid Post..Create new product!");
     res.redirect('/products/new');
@@ -44,12 +41,19 @@ router.put('/:id', (req, res) => {
     let addressID = req.params.id;
     let targetID = req.body.id;
   if(putIsValid(newProduct, addressID)){
-    updatePropertiesWith(newProduct, req, res);
+    // getSpecificProduct()
+    updatePropertiesWith(newProduct)
+        .then( _ => {
+            res.redirect(303, `/products/${targetID}`);
+        })
+        .catch( error => {
+            req.flash("error", "Update failed..incorrect form values!");
+            res.redirect(303, `/products/${targetID}/edit`);
+        });
   } else {
       req.flash("error", "Update failed..can't find item...try again!");
       res.redirect(303, `/products/${targetID}/edit`);
     }
-    res.redirect(303, `/products/${targetID}`);
 });
 
 router.delete('/:id', (req, res) => {
@@ -64,14 +68,6 @@ router.delete('/:id', (req, res) => {
         req.flash("error", "Delete unsuccessful..");
         res.redirect(303, `/products/`);
     });
-
-  // if(deleteIsValid(targetID)){
-  //   delete productMap[targetID];
-  // } else {
-  //   req.flash("error", "Delete unsuccessful..");
-  //   res.redirect(303, `/products/${targetID}`);
-  // }
-
 });
 
 router.get('/new', (req, res) => {
@@ -80,16 +76,21 @@ router.get('/new', (req, res) => {
 
 router.get('/:id', (req, res) => {
   let targetID = req.params.id;
-  getSpecificProduct(res, targetID);
+  getSpecificProduct(targetID)
+    .then( result => {
+            res.render('./partials/product', {products:result, messages: res.locals.messages()});
+        })
+     .catch( err => console.error(err));
 });
 
 router.get('/:id/edit', (req, res) => {
   targetID = req.params.id;
-  editSpecificProduct(targetID)
+  getSpecificProduct(targetID)
     .then( result => {
+            console.log(result);
             res.render('./partials/edit_product', {products:result, messages: res.locals.messages()});
         })
-        .catch( err => console.error(err));
+    .catch( err => console.error(err));
 });
 
 module.exports = router;

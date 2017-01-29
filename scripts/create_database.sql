@@ -11,7 +11,8 @@ CREATE TABLE articles
 id serial PRIMARY KEY NOT NULL,
 title text NOT NULL,
 body text NOT NULL,
-author text NOT NULL
+author text NOT NULL,
+urltitle varchar(90) NOT NULL
 );
 
 DROP TABLE IF EXISTS products;

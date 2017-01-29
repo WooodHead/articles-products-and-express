@@ -1,17 +1,43 @@
-let articleList = {};
+const PG_PASS = process.env.PG_PASS;
+const pgp = require('pg-promise')();
+const db = pgp({
+    host: 'localhost',
+    port: 5432,
+    database: 'articles_products_db',
+    user: 'matthewtirrell',
+    password: PG_PASS
+});
+
 
 function getArticles() {
-  return articleList;
+    return db.any('SELECT * FROM articles');
 }
 
+
+function getSpecificArticle(title) {
+    return db.one(`SELECT * FROM articles WHERE title = '${title}'`);
+}
+
+// function getUrlTitle(title) {
+//     return db.one(`SELECT urltitle FROM articles WHERE title = '${title}'`);
+// }
+
 function storeArticle(article) {
-  let savedArticle = {
-      title: article.title,
-      body: article.body,
-      author: article.author,
-      urlTitle: encodeURIComponent(article.title)
-    };
-  articleList[savedArticle.title] = savedArticle;
+    return db.none(`INSERT INTO articles
+                    (
+                        title,
+                        body,
+                        author,
+                        urltitle
+                    )
+                    VALUES
+                    (
+                        '${article.title}',
+                        '${article.body}',
+                        '${article.author}',
+                        '${encodeURIComponent(article.title)}'
+                    )
+                `);
 }
 
 function postIsValid(article) {
@@ -31,46 +57,33 @@ function postIsValid(article) {
 }
 
 function putIsValid(article, address) {
-  if(article.hasOwnProperty('title') && article.title === address && articleList.hasOwnProperty(article.title)){
+  if(article.hasOwnProperty('title') && article.title === address){
       return true;
     } else {
     return false;
   }
 }
 
-function isValidToDelete(address) {
-  if(articleList.hasOwnProperty(address)){
-    return true;
-  } else {
-    return false;
-  }
+function deleteArticle (title) {
+    return db.none(`DELETE FROM articles WHERE title = '${title}'`);
 }
 
-function updatePropertiesWith(article, req, res) {
+function updatePropertiesWith(article, address) {
   let articleKey = article.title;
-  if(article.hasOwnProperty('body')){
-    if(article.body !== '' && isNaN(parseInt(article.body))){
-      articleList[articleKey].body = article.body;
-    } else {
-      req.flash("error", "Update failed...must have a value and can't be a number!");
-      res.redirect(303,`/articles/${articleList[articleKey].urlTitle}/edit`);
-    }
-  }
-  if(article.hasOwnProperty('author')){
-    if(article.author !== '' && isNaN(parseInt(article.author))){
-      articleList[articleKey].author = article.author;
-    } else {
-      req.flash("error", "Update failed...must have a value and can't be a number!");
-      res.redirect(303,`/articles/${articleList[articleKey].urlTitle}/edit`);
-    }
-  }
+  return db.none(`UPDATE articles
+            SET
+                body = '${article.body}',
+                author = '${article.author}'
+            WHERE title = '${articleKey}';
+         `);
 }
 
 module.exports = {
   getArticles: getArticles,
   storeArticle: storeArticle,
+  getSpecificArticle: getSpecificArticle,
   putValidator: putIsValid,
   postValidator: postIsValid,
-  deleteValidator: isValidToDelete,
+  deleteArticle: deleteArticle,
   updatePropertiesWith: updatePropertiesWith
 };

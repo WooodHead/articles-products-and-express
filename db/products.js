@@ -9,19 +9,12 @@ const db = pgp({
 });
 
 function getProductList() {
-  return db.any('SELECT * FROM products');
+    return db.any('SELECT * FROM products');
 }
 
-function editSpecificProduct(id) {
+function getSpecificProduct(id) {
     return db.one(`SELECT * FROM products WHERE id = ${id}`);
-}
 
-function getSpecificProduct(res, id) {
-    db.one(`SELECT * FROM products WHERE id = ${id}`)
-        .then( result => {
-            res.render('./partials/product', {products:result, messages: res.locals.messages()});
-        })
-        .catch( err => console.error(err));
 }
 
 function storeProduct(product) {
@@ -37,7 +30,8 @@ function storeProduct(product) {
                 '${product.name}',
                 ${parseInt(product.price)},
                 ${parseInt(product.inventory)}
-                )`);
+                )`
+            );
 }
 
 function postIsValid(product) {
@@ -70,56 +64,21 @@ function deleteProduct(id) {
     return db.none(`DELETE FROM products WHERE id = ${id}`);
 }
 
-// function deleteIsValid(ID) {
-//   if(productList.hasOwnProperty(ID)){
-//     return true;
-//   } else {
-//     return false;
-//   }
-// }
-
-function updatePropertiesWith(product, req, res) {
+function updatePropertiesWith(product) {
   let targetID = product.id;
-  if(product.hasOwnProperty('name')){
-    if(product.name !== '' && isNaN(parseInt(product.name))){
-    //productList[targetID].name = product.name;
-        db.none(`UPDATE products
-                SET name = '${product.name}'
-                WHERE id = ${targetID}`);
-    } else {
-      req.flash("error", "Update failed...must have a value and can't be a number!");
-      res.redirect(303, `/products/${targetID}/edit`);
-    }
-  }
-  if(product.hasOwnProperty('price')){
-    if(product.price !== '' && typeof parseInt(product.price) == "number"){
-        db.none(`UPDATE products
-                SET price = ${product.price}
-                WHERE id = ${targetID}`);
-    //productList[targetID].price = product.price;
-    } else {
-      req.flash("error", "Update failed...must have a value and can't be a number!");
-      res.redirect(303, `/products/${targetID}/edit`);
-    }
-  }
-  if(product.hasOwnProperty('inventory')){
-    if(product.inventory !=='' && typeof parseInt(product.inventory) === "number"){
-        db.none(`UPDATE products
-                SET inventory = ${product.inventory}
-                WHERE id = ${targetID}`);
-    //productList[targetID].inventory = product.inventory;
-    } else {
-      req.flash("error", "Update failed...must have a value and can't be a number!");
-      res.redirect(303, `/products/${targetID}/edit`);
-    }
-  }
+  return db.none(`UPDATE products
+                    SET
+                        name = '${product.name}'
+                        price = ${product.price},
+                        inventory = ${product.inventory}
+                    WHERE id = ${targetID};
+    `);
 }
 
 
 module.exports = {
   getProductList:getProductList,
   getSpecificProduct: getSpecificProduct,
-  editSpecificProduct: editSpecificProduct,
   storeProduct: storeProduct,
   postValidator: postIsValid,
   putValidator: putIsValid,
