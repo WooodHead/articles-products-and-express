@@ -62,12 +62,7 @@ router.delete('/:title', (req, res) => {
   let articlePath = req.params.title;
   let articleAddress = encodeURIComponent(articlePath);
   deleteArticle(articlePath);
-  // if(isValidToDelete(articlePath)){
-  //   delete articleMap[articlePath];
-  // } else {
-  //   req.flash("error", "Delete unsuccessful...");
-  //   res.redirect(303,`/articles/${articleAddress}`);
-  // }
+
   req.flash("info", "Delete success!");
   res.redirect(303, '/articles');
 });

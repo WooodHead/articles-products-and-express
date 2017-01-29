@@ -20,18 +20,18 @@ function getSpecificProduct(id) {
 function storeProduct(product) {
 
     return db.none(`INSERT INTO products
-                (
-                name,
-                price,
-                inventory
-                )
-                VALUES
-                (
-                '${product.name}',
-                ${parseInt(product.price)},
-                ${parseInt(product.inventory)}
-                )`
-            );
+                    (
+                        name,
+                        price,
+                        inventory
+                     )
+                    VALUES
+                    (
+                        '${product.name}',
+                        ${parseInt(product.price)},
+                        ${parseInt(product.inventory)}
+                    )`
+                 );
 }
 
 function postIsValid(product) {
@@ -68,11 +68,11 @@ function updatePropertiesWith(product) {
   let targetID = product.id;
   return db.none(`UPDATE products
                     SET
-                        name = '${product.name}'
+                        name = '${product.name}',
                         price = ${product.price},
                         inventory = ${product.inventory}
                     WHERE id = ${targetID};
-    `);
+                 `);
 }
 
 

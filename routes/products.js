@@ -37,11 +37,11 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+    console.log("new req ", req.body);
     let newProduct = req.body;
     let addressID = req.params.id;
     let targetID = req.body.id;
   if(putIsValid(newProduct, addressID)){
-    // getSpecificProduct()
     updatePropertiesWith(newProduct)
         .then( _ => {
             res.redirect(303, `/products/${targetID}`);
@@ -87,7 +87,6 @@ router.get('/:id/edit', (req, res) => {
   targetID = req.params.id;
   getSpecificProduct(targetID)
     .then( result => {
-            console.log(result);
             res.render('./partials/edit_product', {products:result, messages: res.locals.messages()});
         })
     .catch( err => console.error(err));

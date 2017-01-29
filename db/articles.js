@@ -18,10 +18,6 @@ function getSpecificArticle(title) {
     return db.one(`SELECT * FROM articles WHERE title = '${title}'`);
 }
 
-// function getUrlTitle(title) {
-//     return db.one(`SELECT urltitle FROM articles WHERE title = '${title}'`);
-// }
-
 function storeArticle(article) {
     return db.none(`INSERT INTO articles
                     (
