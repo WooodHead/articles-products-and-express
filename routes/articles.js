@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express('router');
-const articles = require('../db/articles');
+const articles = require('../models/articles');
 const postIsValid = articles.postValidator;
 const putIsValid = articles.putValidator;
 const deleteArticle = articles.deleteArticle;
@@ -40,7 +40,6 @@ router.post('/', (req, res) => {
 
 router.put('/:title', (req, res) => {
   let newArticle = req.body;
-  console.log(newArticle);
   let articleKey = req.body.title;
   let articlePath = req.params.title;
   if(putIsValid(newArticle, articlePath)){

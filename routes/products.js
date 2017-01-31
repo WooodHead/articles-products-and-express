@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express('router');
-const products = require('../db/products');
+const products = require('../models/products');
 const postIsValid = products.postValidator;
 const putIsValid = products.putValidator;
 const deleteIsValid = products.deleteValidator;
