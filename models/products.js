@@ -83,6 +83,5 @@ module.exports = {
   postValidator: postIsValid,
   putValidator: putIsValid,
   deleteProduct: deleteProduct,
-  //deleteValidator: deleteIsValid,
   updatePropertiesWith: updatePropertiesWith
 };

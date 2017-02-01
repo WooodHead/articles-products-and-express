@@ -16,7 +16,9 @@ router.get('/', (req, res) => {
        .then( result => {
             res.render('index', {products: result, productMessages: res.locals.messages()});
                 })
-       .catch( error => console.error(error));
+       .catch( error => {
+            res.send("error yo");
+       });
 });
 
 router.post('/', (req, res) => {
@@ -37,7 +39,6 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    console.log("new req ", req.body);
     let newProduct = req.body;
     let addressID = req.params.id;
     let targetID = req.body.id;
