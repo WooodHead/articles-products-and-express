@@ -22,7 +22,6 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   let newArticle = req.body;
-  let articleKey = newArticle.title;
   if(postIsValid(newArticle)){
         storeArticle(newArticle)
             .then( _ => {
@@ -40,29 +39,34 @@ router.post('/', (req, res) => {
 
 router.put('/:title', (req, res) => {
   let newArticle = req.body;
-  let articleKey = req.body.title;
+  let articleTitle = req.body.title;
   let articlePath = req.params.title;
   if(putIsValid(newArticle, articlePath)){
     updatePropertiesWith(newArticle, articlePath)
         .then( _ => {
-            res.redirect(303, `/articles/${encodeURIComponent(articleKey)}`);
+            res.redirect(303, `/articles/${encodeURIComponent(articleTitle)}`);
         })
         .catch( error => {
             req.flash("error", "Update failed..invalid form entry..");
-            res.redirect(303,`/articles/${encodeURIComponent(articleKey)}/edit`);
+            res.redirect(303,`/articles/${encodeURIComponent(articleTitle)}/edit`);
         });
   } else {
     req.flash("error", "Update failed...can't find item...try again!");
-    res.redirect(303,`/articles/${encodeURIComponent(articleKey)}/edit`);
+    res.redirect(303,`/articles/${encodeURIComponent(articleTitle)}/edit`);
   }
 });
 
 router.delete('/:title', (req, res) => {
   let articlePath = req.params.title;
-  let articleAddress = encodeURIComponent(articlePath);
-  deleteArticle(articlePath);
-  req.flash("info", "Delete success!");
-  res.redirect(303, '/articles');
+  getSpecificArticle(articlePath)
+    .then( article => {
+        deleteArticle(article.title);
+        req.flash("info", "Delete success!");
+        res.redirect(303, '/articles');
+    }).catch( error => {
+        req.flash("error", "Cannot delete.. item does not exist");
+        res.redirect(303, '/articles');
+    });
 });
 
 router.get('/new', (req, res) => {

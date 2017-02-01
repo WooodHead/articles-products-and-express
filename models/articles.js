@@ -67,10 +67,10 @@ function deleteArticle (title) {
 function updatePropertiesWith(article, address) {
   let articleKey = article.title;
   return db.none(`UPDATE articles
-            SET
-                body = '${article.body}',
-                author = '${article.author}'
-            WHERE title = '${articleKey}';
+                    SET
+                        body = '${article.body}',
+                        author = '${article.author}'
+                    WHERE title = '${articleKey}';
          `);
 }
 
