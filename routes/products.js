@@ -80,7 +80,10 @@ router.get('/:id', (req, res) => {
     .then( result => {
             res.render('./partials/product', {products:result, messages: res.locals.messages()});
         })
-     .catch( err => console.error(err));
+     .catch( error => {
+            req.flash("error", "Item does not exist..");
+            res.redirect('/products');
+     });
 });
 
 router.get('/:id/edit', (req, res) => {
@@ -89,7 +92,10 @@ router.get('/:id/edit', (req, res) => {
     .then( result => {
             res.render('./partials/edit_product', {products:result, messages: res.locals.messages()});
         })
-    .catch( err => console.error(err));
+    .catch( error => {
+            req.flash("error", "Cannot find item..Please choose one from below..");
+            res.redirect('/products');
+    });
 });
 
 module.exports = router;

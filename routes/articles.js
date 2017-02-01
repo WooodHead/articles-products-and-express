@@ -87,7 +87,10 @@ router.get('/:title/edit', (req, res) => {
     .then( article => {
         res.render('./partials/edit_article', {articles: article, messages: res.locals.messages()});
     })
-    .catch( error => console.error(error));
+    .catch( error => {
+        req.flash("error", "Cannot find item...Please select from items below..");
+        res.redirect('/articles');
+    });
 });
 
 module.exports = router;
