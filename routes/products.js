@@ -14,9 +14,9 @@ const deleteProduct = products.deleteProduct;
 router.get('/', (req, res) => {
   getProductList()
        .then( result => {
-                      res.render('index', {products: result, productMessages: res.locals.messages()});
+            res.render('index', {products: result, productMessages: res.locals.messages()});
                 })
-         .catch( error => console.error(error));
+       .catch( error => console.error(error));
 });
 
 router.post('/', (req, res) => {
@@ -58,15 +58,15 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   let targetID = req.params.id;
-  deleteProduct(targetID)
-    .then( _ => {
+  getSpecificProduct(targetID)
+    .then( product => {
+        deleteProduct(product.id);
         req.flash("info", "Delete successful!");
         res.redirect(303, '/products');
     })
     .catch( error => {
-        console.log("this is the error :", error);
-        req.flash("error", "Delete unsuccessful..");
-        res.redirect(303, `/products/`);
+        req.flash("error", "Cannot delete...item does not exist!");
+        res.redirect(303, '/products');
     });
 });
 
