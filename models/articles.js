@@ -53,7 +53,7 @@ function postIsValid(article) {
 }
 
 function putIsValid(article, address) {
-  if(article.hasOwnProperty('title') && article.title === address){
+  if(article.hasOwnProperty('title') || article.title === address){
       return true;
     } else {
     return false;
@@ -64,13 +64,15 @@ function deleteArticle (title) {
     return db.none(`DELETE FROM articles WHERE title = '${title}'`);
 }
 
-function updatePropertiesWith(article, address) {
+function updatePropertiesWith(article, oldArticleTitle) {
   let articleKey = article.title;
   return db.none(`UPDATE articles
                     SET
+                        title = '${article.title}',
                         body = '${article.body}',
-                        author = '${article.author}'
-                    WHERE title = '${articleKey}';
+                        author = '${article.author}',
+                        urltitle = '${encodeURIComponent(article.title)}'
+                    WHERE title = '${oldArticleTitle}';
          `);
 }
 

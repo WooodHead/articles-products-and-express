@@ -41,6 +41,7 @@ router.put('/:title', (req, res) => {
   let newArticle = req.body;
   let articleTitle = req.body.title;
   let articlePath = req.params.title;
+  console.log(newArticle, articlePath);
   if(putIsValid(newArticle, articlePath)){
     updatePropertiesWith(newArticle, articlePath)
         .then( _ => {
