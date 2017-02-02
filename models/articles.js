@@ -68,10 +68,12 @@ function updatePropertiesWith(article, oldArticleTitle) {
   let articleKey = article.title;
   return db.none(`UPDATE articles
                     SET
+
                         title = '${article.title}',
                         body = '${article.body}',
                         author = '${article.author}',
                         urltitle = '${encodeURIComponent(article.title)}'
+
                     WHERE title = '${oldArticleTitle}';
          `);
 }
